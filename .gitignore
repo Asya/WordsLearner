@@ -1,3 +1,7 @@
+#IDEA files
+WordsLearner.iml
+*.iml
+
 # Built application files
 *.apk
 *.ap_
