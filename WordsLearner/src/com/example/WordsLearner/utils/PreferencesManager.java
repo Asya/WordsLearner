@@ -16,7 +16,7 @@
  *  limitations under the License.
  */
 
-package com.example.WordsLearner;
+package com.example.WordsLearner.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

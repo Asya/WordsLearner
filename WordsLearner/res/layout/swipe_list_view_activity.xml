@@ -36,6 +36,14 @@
             swipe:swipeDrawableUnchecked="@drawable/choice_unselected"
             swipe:swipeCloseAllItemsWhenMoveList="true"
             swipe:swipeMode="left"
+            android:layout_weight="1"
             />
+
+    <Button
+        android:id="@+id/add_item_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_item"
+        />
 
 </LinearLayout>

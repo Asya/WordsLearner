@@ -16,7 +16,7 @@
  *  limitations under the License.
  */
 
-package com.example.WordsLearner;
+package com.example.WordsLearner.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +28,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.example.WordsLearner.adapters.PackageItem;
+import com.example.WordsLearner.R;
 import com.fortysevendeg.swipelistview.SwipeListView;
 
 import java.util.List;

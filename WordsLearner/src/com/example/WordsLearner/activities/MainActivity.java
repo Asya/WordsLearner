@@ -1,4 +1,4 @@
-package com.example.WordsLearner;
+package com.example.WordsLearner.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -9,6 +9,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import com.example.WordsLearner.adapters.PackageAdapter;
+import com.example.WordsLearner.adapters.PackageItem;
+import com.example.WordsLearner.R;
+import com.example.WordsLearner.activities.ChoosePhoto;
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
 
@@ -95,7 +101,13 @@ public class MainActivity extends Activity {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-
+        Button addItemBtn = (Button) findViewById(R.id.add_item_btn);
+        addItemBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ChoosePhoto.class));
+            }
+        });
     }
 
     private void reload() {
@@ -165,6 +177,5 @@ public class MainActivity extends Activity {
             progressDialog.dismiss();
             progressDialog = null;
         }
-
     }
 }
