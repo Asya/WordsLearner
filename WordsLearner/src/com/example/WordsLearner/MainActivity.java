@@ -158,5 +158,13 @@ public class MainActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
 
+    }
 }
