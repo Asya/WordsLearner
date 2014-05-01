@@ -1,6 +1,9 @@
 #IDEA files
-WordsLearner.iml
 *.iml
+*.idea
+WordsLearner/out/
+out/
+
 
 # Built application files
 *.apk
@@ -13,12 +16,13 @@ WordsLearner.iml
 *.class
 
 # Generated files
-bin/
-gen/
+WordsLearner/bin/
+WordsLearner/gen/
+
 
 # Gradle files
-.gradle/
-build/
+android-swipelistview-master/gradle/
+android-swipelistview-master/build/
 
 # Local configuration file (sdk path, etc)
 local.properties
