@@ -3,29 +3,25 @@ package com.example.WordsLearner.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import com.example.WordsLearner.adapters.PackageAdapter;
-import com.example.WordsLearner.adapters.PackageItem;
+import com.example.WordsLearner.adapters.WordsAdapter;
 import com.example.WordsLearner.R;
-import com.example.WordsLearner.activities.ChoosePhoto;
+import com.example.WordsLearner.db.WordsLearnerDataHelper;
+import com.example.WordsLearner.model.Word;
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    private static final int REQUEST_CODE_SETTINGS = 0;
-    private PackageAdapter adapter;
-    private List<PackageItem> data;
+
+    private WordsAdapter adapter;
+    private List<Word> words;
 
     private SwipeListView swipeListView;
 
@@ -37,12 +33,10 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.swipe_list_view_activity);
 
-        data = new ArrayList<PackageItem>();
-
-        adapter = new PackageAdapter(this, data);
+        words = new ArrayList<Word>();
+        adapter = new WordsAdapter(this, words);
 
         swipeListView = (SwipeListView) findViewById(R.id.example_lv_list);
-
         swipeListView.setSwipeListViewListener(new BaseSwipeListViewListener() {
             @Override
             public void onOpened(int position, boolean toRight) {
@@ -83,23 +77,12 @@ public class MainActivity extends Activity {
             @Override
             public void onDismiss(int[] reverseSortedPositions) {
                 for (int position : reverseSortedPositions) {
-                    data.remove(position);
+                    words.remove(position);
                 }
                 adapter.notifyDataSetChanged();
             }
 
         });
-
-        swipeListView.setAdapter(adapter);
-
-        reload();
-
-        new ListAppTask().execute();
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getString(R.string.loading));
-        progressDialog.setCancelable(false);
-        progressDialog.show();
 
         Button addItemBtn = (Button) findViewById(R.id.add_item_btn);
         addItemBtn.setOnClickListener(new View.OnClickListener() {
@@ -110,58 +93,31 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void reload() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        swipeListView.setAdapter(adapter);
         swipeListView.setSwipeActionLeft(SwipeListView.SWIPE_ACTION_REVEAL);
         swipeListView.setSwipeOpenOnLongPress(true);
+
+        new LisWordsTask().execute();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.loading));
+        progressDialog.setCancelable(false);
+        progressDialog.show();
     }
 
-    public int convertDpToPixel(float dp) {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        float px = dp * (metrics.densityDpi / 160f);
-        return (int) px;
-    }
+    public class LisWordsTask extends AsyncTask<Void, Void, List<Word>> {
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQUEST_CODE_SETTINGS:
-                reload();
-        }
-    }
-
-    public class ListAppTask extends AsyncTask<Void, Void, List<PackageItem>> {
-
-        protected List<PackageItem> doInBackground(Void... args) {
-            PackageManager appInfo = getPackageManager();
-            List<ApplicationInfo> listInfo = appInfo.getInstalledApplications(0);
-            Collections.sort(listInfo, new ApplicationInfo.DisplayNameComparator(appInfo));
-
-            List<PackageItem> data = new ArrayList<PackageItem>();
-
-            for (int index = 0; index < listInfo.size(); index++) {
-                try {
-                    ApplicationInfo content = listInfo.get(index);
-                    if ((content.flags != ApplicationInfo.FLAG_SYSTEM) && content.enabled) {
-                        if (content.icon != 0) {
-                            PackageItem item = new PackageItem();
-                            item.setName(getPackageManager().getApplicationLabel(content).toString());
-                            item.setPackageName(content.packageName);
-                            item.setIcon(getPackageManager().getDrawable(content.packageName, content.icon, content));
-                            data.add(item);
-                        }
-                    }
-                } catch (Exception e) {
-
-                }
-            }
-
-            return data;
+        protected List<Word> doInBackground(Void... args) {
+            WordsLearnerDataHelper db = new WordsLearnerDataHelper(MainActivity.this);
+            return db.getAllWords();
         }
 
-        protected void onPostExecute(List<PackageItem> result) {
-            data.clear();
-            data.addAll(result);
+        protected void onPostExecute(List<Word> result) {
+            words.clear();
+            words.addAll(result);
             adapter.notifyDataSetChanged();
             if (progressDialog != null) {
                 progressDialog.dismiss();

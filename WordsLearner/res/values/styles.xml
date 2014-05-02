@@ -86,12 +86,4 @@
         <item name="android:layout_height">@dimen/line_default</item>
     </style>
 
-    <style name="New">
-        <item name="android:textColor">@color/text_new_tag</item>
-        <item name="android:textSize">@dimen/font_size_new_tag</item>
-        <item name="android:text">@string/newTag</item>
-        <item name="android:background">@drawable/background_new_tag</item>
-        <item name="android:padding">@dimen/padding_new_tag</item>
-    </style>
-
 </resources>

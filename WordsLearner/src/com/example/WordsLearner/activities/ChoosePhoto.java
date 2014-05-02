@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import com.example.WordsLearner.R;
+import com.example.WordsLearner.db.WordsLearnerDataHelper;
+import com.example.WordsLearner.model.Word;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,8 +28,6 @@ public class ChoosePhoto extends Activity {
 
     private static final int PICK_IMAGE = 2;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-
-    public static final String EXTRA_PATH = "extraPath";
 
     private static String mCurrentPhotoPath;
 
@@ -96,6 +96,25 @@ public class ChoosePhoto extends Activity {
                 }
             }
         }
+
+        private File createImageFile() throws IOException {
+            // Create an image file name
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = new File(Environment.getExternalStorageDirectory() + File.separator + "WordsLearner");
+            if (!storageDir.exists()) {
+                storageDir.mkdirs();
+                storageDir.createNewFile();
+            }
+
+            File image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
+            mCurrentPhotoPath = image.getAbsolutePath();
+            return image;
+        }
     }
 
     @Override
@@ -118,16 +137,16 @@ public class ChoosePhoto extends Activity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             } else {
-                //TODO: go to next step
+                saveToDB(imageFilePath);
             }
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             saveMediaEntry(mCurrentPhotoPath, getContentResolver());
-               //TODO: go to next step
+                saveToDB(mCurrentPhotoPath);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public static Uri saveMediaEntry(String imagePath, ContentResolver contentResolver) {
+    private Uri saveMediaEntry(String imagePath, ContentResolver contentResolver) {
         ContentValues v = new ContentValues();
         v.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
 
@@ -137,22 +156,8 @@ public class ChoosePhoto extends Activity {
         return contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, v);
     }
 
-    public static File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = new File(Environment.getExternalStorageDirectory() + File.separator + "Gray");
-        if (!storageDir.exists()) {
-            storageDir.mkdirs();
-            storageDir.createNewFile();
-        }
-
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+    private void saveToDB(String imagePath) {
+        WordsLearnerDataHelper db = new WordsLearnerDataHelper(this);
+        db.addWord(new Word(imagePath, null, null));
     }
 }

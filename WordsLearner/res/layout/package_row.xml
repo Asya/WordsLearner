@@ -32,23 +32,16 @@
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/example_row_b_action_1"
+                android:id="@+id/btn_edit"
                 style="@style/ListButtonAction"
-                android:text="@string/open"/>
+                android:text="@string/edit"/>
 
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/example_row_b_action_2"
+                android:id="@+id/btn_delete"
                 style="@style/ListButtonAction"
-                android:text="@string/googlePlay"/>
-
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/example_row_b_action_3"
-                style="@style/ListButtonAction"
-                android:text="@string/uninstall"/>
+                android:text="@string/delete"/>
 
     </LinearLayout>
 
@@ -60,22 +53,15 @@
 
         <ImageView
                 style="@style/ListImage"
-                android:id="@+id/example_row_iv_image"/>
+                android:id="@+id/image"/>
 
         <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/example_row_iv_image"
+                android:layout_toRightOf="@id/image"
+                android:layout_centerVertical="true"
                 style="@style/ListTitle"
-                android:id="@+id/example_row_tv_title"/>
-
-        <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/example_row_iv_image"
-                android:layout_below="@id/example_row_tv_title"
-                style="@style/ListDescription"
-                android:id="@+id/example_row_tv_description"/>
+                android:id="@+id/name"/>
 
     </RelativeLayout>
 
