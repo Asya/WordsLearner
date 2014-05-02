@@ -29,6 +29,8 @@ public class ChoosePhoto extends Activity {
     private static final int PICK_IMAGE = 2;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
+    public static final String WORDS_FOLDER = Environment.getExternalStorageDirectory() + File.separator + "WordsLearner";
+
     private static String mCurrentPhotoPath;
 
     @Override

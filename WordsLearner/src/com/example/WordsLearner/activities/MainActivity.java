@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.swipe_list_view_activity);
 
         words = new ArrayList<Word>();
-        adapter = new WordsAdapter(this, words);
+        adapter = new WordsAdapter(this, words, new CloseListMenuListener());
 
         swipeListView = (SwipeListView) findViewById(R.id.example_lv_list);
         swipeListView.setSwipeListViewListener(new BaseSwipeListViewListener() {
@@ -132,6 +132,12 @@ public class MainActivity extends Activity {
         if(progressDialog != null) {
             progressDialog.dismiss();
             progressDialog = null;
+        }
+    }
+
+    public class CloseListMenuListener {
+        public void closeMenu() {
+            swipeListView.closeOpenedItems();
         }
     }
 }

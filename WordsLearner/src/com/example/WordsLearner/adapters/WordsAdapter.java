@@ -9,19 +9,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.example.WordsLearner.R;
+import com.example.WordsLearner.activities.ChoosePhoto;
+import com.example.WordsLearner.activities.MainActivity;
+import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.model.Word;
 import com.fortysevendeg.swipelistview.SwipeListView;
 
+import java.io.File;
 import java.util.List;
 
 public class WordsAdapter extends BaseAdapter {
 
     private List<Word> data;
     private Context context;
+    private MainActivity.CloseListMenuListener closeListMenuListener;
 
-    public WordsAdapter(Context context, List<Word> data) {
+    public WordsAdapter(Context context, List<Word> data, MainActivity.CloseListMenuListener closeListMenuListener) {
         this.context = context;
         this.data = data;
+        this.closeListMenuListener = closeListMenuListener;
     }
 
     @Override
@@ -45,7 +51,7 @@ public class WordsAdapter extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = li.inflate(R.layout.package_row, parent, false);
+            convertView = li.inflate(R.layout.word_list_row, parent, false);
             holder = new ViewHolder();
             holder.ivImage = (ImageView) convertView.findViewById(R.id.image);
             holder.tvTitle = (TextView) convertView.findViewById(R.id.name);
@@ -75,16 +81,32 @@ public class WordsAdapter extends BaseAdapter {
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: delete word from DB
+                deleteWord(position, word);
             }
         });
 
         return convertView;
     }
 
+    private void deleteWord(int position, Word word) {
+        data.remove(position);
+        notifyDataSetChanged();
+        closeListMenuListener.closeMenu();
+
+        //TOOD: check if I need to do in separate thread
+        WordsLearnerDataHelper db = new WordsLearnerDataHelper(context);
+        db.deleteWord(word);
+
+        if(word.getImagePath().startsWith(ChoosePhoto.WORDS_FOLDER)) {
+            File file = new File(word.getImagePath());
+            if (!file.exists()) {
+                file.delete();
+            }
+        }
+    }
+
     public static Bitmap decodeSampledBitmapFromResource(String imagePath,
                                                          int reqWidth, int reqHeight) {
-
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
