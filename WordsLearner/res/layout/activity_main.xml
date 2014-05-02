@@ -5,4 +5,4 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     tools:ignore="MergeRootFrame"
-    android:background="@color/background_app"        />
+    android:background="@color/background_app"/>

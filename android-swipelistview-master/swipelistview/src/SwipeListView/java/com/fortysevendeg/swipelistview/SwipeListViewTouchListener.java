@@ -145,6 +145,7 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
             frontView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    closeOtherOpenedItems();
                     openAnimate(downPosition);
                     return false;
                 }
