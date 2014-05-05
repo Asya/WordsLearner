@@ -2,19 +2,15 @@
 package com.example.WordsLearner.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.example.WordsLearner.R;
-import com.example.WordsLearner.activities.ChoosePhoto;
-import com.example.WordsLearner.activities.MainActivity;
+import com.example.WordsLearner.activities.WordsListActivity;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.lazyloader.ImageLoader;
 import com.example.WordsLearner.model.Word;
-import com.example.WordsLearner.utils.Utils;
 import com.fortysevendeg.swipelistview.SwipeListView;
 
 import java.io.File;
@@ -24,11 +20,11 @@ public class WordsAdapter extends BaseAdapter {
 
     private List<Word> data;
     private Context context;
-    private MainActivity.CloseListMenuListener closeListMenuListener;
+    private WordsListActivity.CloseListMenuListener closeListMenuListener;
     public ImageLoader imageLoader;
 
 
-    public WordsAdapter(Context context, List<Word> data, MainActivity.CloseListMenuListener closeListMenuListener) {
+    public WordsAdapter(Context context, List<Word> data, WordsListActivity.CloseListMenuListener closeListMenuListener) {
         this.context = context;
         this.data = data;
         this.closeListMenuListener = closeListMenuListener;
@@ -56,7 +52,7 @@ public class WordsAdapter extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = li.inflate(R.layout.word_list_row, parent, false);
+            convertView = li.inflate(R.layout.row_word_list, parent, false);
             holder = new ViewHolder();
             holder.ivImage = (ImageView) convertView.findViewById(R.id.image);
             holder.tvTitle = (TextView) convertView.findViewById(R.id.name);
@@ -69,7 +65,6 @@ public class WordsAdapter extends BaseAdapter {
 
         ((SwipeListView)parent).recycle(convertView, position);
 
-        //holder.ivImage.setImageBitmap(decodeSampledBitmapFromResource(word.getImagePath(), 100, 100));
         imageLoader.DisplayImage(word.getImagePath(), holder.ivImage);
         if(word.getName() != null) {
             holder.tvTitle.setText(word.getName());
@@ -99,54 +94,13 @@ public class WordsAdapter extends BaseAdapter {
         notifyDataSetChanged();
         closeListMenuListener.closeMenu();
 
-        //TOOD: check if I need to do in separate thread
         WordsLearnerDataHelper db = new WordsLearnerDataHelper(context);
         db.deleteWord(word);
 
-        if(word.getImagePath().startsWith(Utils.WORDS_FOLDER)) {
-            File file = new File(word.getImagePath());
-            if (!file.exists()) {
-                file.delete();
-            }
+        File file = new File(word.getImagePath());
+        if (!file.exists()) {
+            file.delete();
         }
-    }
-
-    public static Bitmap decodeSampledBitmapFromResource(String imagePath,
-                                                         int reqWidth, int reqHeight) {
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(imagePath, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeFile(imagePath, options);
-    }
-
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
     }
 
     static class ViewHolder {

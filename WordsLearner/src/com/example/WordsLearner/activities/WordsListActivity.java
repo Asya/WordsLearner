@@ -18,7 +18,7 @@ import com.fortysevendeg.swipelistview.SwipeListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class WordsListActivity extends Activity {
 
     private WordsAdapter adapter;
     private List<Word> words;
@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.swipe_list_view_activity);
+        setContentView(R.layout.activity_words_list);
 
         words = new ArrayList<Word>();
         adapter = new WordsAdapter(this, words, new CloseListMenuListener());
@@ -56,22 +56,18 @@ public class MainActivity extends Activity {
 
             @Override
             public void onStartOpen(int position, int action, boolean right) {
-                Log.d("swipe", String.format("onStartOpen %d - action %d", position, action));
             }
 
             @Override
             public void onStartClose(int position, boolean right) {
-                Log.d("swipe", String.format("onStartClose %d", position));
             }
 
             @Override
             public void onClickFrontView(int position) {
-                Log.d("swipe", String.format("onClickFrontView %d", position));
             }
 
             @Override
             public void onClickBackView(int position) {
-                Log.d("swipe", String.format("onClickBackView %d", position));
             }
 
             @Override
@@ -88,7 +84,7 @@ public class MainActivity extends Activity {
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ChoosePhoto.class));
+                startActivity(new Intent(WordsListActivity.this, ChoosePhoto.class));
             }
         });
     }
@@ -111,7 +107,7 @@ public class MainActivity extends Activity {
     public class LisWordsTask extends AsyncTask<Void, Void, List<Word>> {
 
         protected List<Word> doInBackground(Void... args) {
-            WordsLearnerDataHelper db = new WordsLearnerDataHelper(MainActivity.this);
+            WordsLearnerDataHelper db = new WordsLearnerDataHelper(WordsListActivity.this);
             return db.getAllWords();
         }
 

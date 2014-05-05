@@ -56,15 +56,4 @@ public class PreferencesManager {
         return preferencesManager;
     }
 
-    public void setShowAbout(boolean showAbout) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(SHARED_PREFERENCES_SHOW_ABOUT, showAbout);
-        editor.commit();
-    }
-
-    public boolean getShowAbout() {
-        return sharedPreferences.getBoolean(SHARED_PREFERENCES_SHOW_ABOUT, true);
-    }
-
-
 }
