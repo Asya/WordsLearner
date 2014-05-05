@@ -8,7 +8,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,20 +17,16 @@ import android.widget.Button;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.model.Word;
+import com.example.WordsLearner.utils.Utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.*;
 
 public class ChoosePhoto extends Activity {
 
     private static final int PICK_IMAGE = 2;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    public static final String WORDS_FOLDER = Environment.getExternalStorageDirectory() + File.separator + "WordsLearner";
-
-    private static String mCurrentPhotoPath;
+    private static String mCurrentPhotoName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,21 +95,18 @@ public class ChoosePhoto extends Activity {
         }
 
         private File createImageFile() throws IOException {
-            // Create an image file name
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = "JPEG_" + timeStamp + "_";
-            File storageDir = new File(Environment.getExternalStorageDirectory() + File.separator + "WordsLearner");
+            File storageDir = new File(Utils.WORDS_FOLDER);
             if (!storageDir.exists()) {
                 storageDir.mkdirs();
                 storageDir.createNewFile();
             }
 
             File image = File.createTempFile(
-                    imageFileName,  /* prefix */
+                    "IMG_",  /* prefix */
                     ".jpg",         /* suffix */
                     storageDir      /* directory */
             );
-            mCurrentPhotoPath = image.getAbsolutePath();
+            mCurrentPhotoName = image.getName();
             return image;
         }
     }
@@ -139,23 +131,60 @@ public class ChoosePhoto extends Activity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             } else {
-                saveToDB(imageFilePath);
+                File file = new File(imageFilePath);
+                copyFile(file.getParent(), file.getName(), Utils.WORDS_FOLDER);
+                saveToDB(file.getName());
             }
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            saveMediaEntry(mCurrentPhotoPath, getContentResolver());
-                saveToDB(mCurrentPhotoPath);
+            saveMediaEntry(mCurrentPhotoName, getContentResolver());
+            saveToDB(mCurrentPhotoName);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private Uri saveMediaEntry(String imagePath, ContentResolver contentResolver) {
+    private Uri saveMediaEntry(String imageName, ContentResolver contentResolver) {
         ContentValues v = new ContentValues();
         v.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
 
-        File f = new File(imagePath);
+        File f = new File(Utils.WORDS_FOLDER, imageName);
         v.put(MediaStore.Images.Media.SIZE, f.length());
-        v.put("_data", imagePath);
+        v.put("_data", f.getAbsolutePath());
         return contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, v);
+    }
+
+    private void copyFile(String inputPath, String inputFile, String outputPath) {
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            //create output directory if it doesn't exist
+            File dir = new File (outputPath);
+            if (!dir.exists())
+            {
+                dir.mkdirs();
+            }
+
+            in = new FileInputStream(inputPath + File.separator + inputFile);
+            out = new FileOutputStream(outputPath + File.separator + inputFile);
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+
+            // write the output file
+            out.flush();
+            out.close();
+        }
+
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void saveToDB(String imagePath) {

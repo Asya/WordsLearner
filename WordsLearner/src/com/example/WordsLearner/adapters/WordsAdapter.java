@@ -12,7 +12,9 @@ import com.example.WordsLearner.R;
 import com.example.WordsLearner.activities.ChoosePhoto;
 import com.example.WordsLearner.activities.MainActivity;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
+import com.example.WordsLearner.lazyloader.ImageLoader;
 import com.example.WordsLearner.model.Word;
+import com.example.WordsLearner.utils.Utils;
 import com.fortysevendeg.swipelistview.SwipeListView;
 
 import java.io.File;
@@ -23,11 +25,14 @@ public class WordsAdapter extends BaseAdapter {
     private List<Word> data;
     private Context context;
     private MainActivity.CloseListMenuListener closeListMenuListener;
+    public ImageLoader imageLoader;
+
 
     public WordsAdapter(Context context, List<Word> data, MainActivity.CloseListMenuListener closeListMenuListener) {
         this.context = context;
         this.data = data;
         this.closeListMenuListener = closeListMenuListener;
+        imageLoader=new ImageLoader(context);
     }
 
     @Override
@@ -64,7 +69,8 @@ public class WordsAdapter extends BaseAdapter {
 
         ((SwipeListView)parent).recycle(convertView, position);
 
-        holder.ivImage.setImageBitmap(decodeSampledBitmapFromResource(word.getImagePath(), 100, 100));
+        //holder.ivImage.setImageBitmap(decodeSampledBitmapFromResource(word.getImagePath(), 100, 100));
+        imageLoader.DisplayImage(word.getImagePath(), holder.ivImage);
         if(word.getName() != null) {
             holder.tvTitle.setText(word.getName());
         } else {
@@ -97,7 +103,7 @@ public class WordsAdapter extends BaseAdapter {
         WordsLearnerDataHelper db = new WordsLearnerDataHelper(context);
         db.deleteWord(word);
 
-        if(word.getImagePath().startsWith(ChoosePhoto.WORDS_FOLDER)) {
+        if(word.getImagePath().startsWith(Utils.WORDS_FOLDER)) {
             File file = new File(word.getImagePath());
             if (!file.exists()) {
                 file.delete();
