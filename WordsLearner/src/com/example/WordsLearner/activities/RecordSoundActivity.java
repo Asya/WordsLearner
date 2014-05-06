@@ -23,14 +23,17 @@ public class RecordSoundActivity extends Activity {
     private MediaRecorder mRecorder = null;
     private MediaPlayer mPlayer = null;
 
-    private String fileName;
+    private String imageName;
+    private String soundName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_sound);
 
-        fileName = getIntent().getStringExtra(Word.WORD_PHOTO_EXTRA);
+        imageName = getIntent().getStringExtra(Word.WORD_PHOTO_EXTRA);
+        soundName = changeExtention(imageName);
 
         Button recordBtn = (Button)findViewById(R.id.btn_record);
         Button listenBtn = (Button)findViewById(R.id.btn_listen);
@@ -59,17 +62,25 @@ public class RecordSoundActivity extends Activity {
             @Override
             public void onClick(View v) {
                 WordsLearnerDataHelper db = new WordsLearnerDataHelper(RecordSoundActivity.this);
-                db.addWord(new Word(fileName, fileName + ".mp3", null));
+                db.addWord(new Word(imageName, soundName, null));
                 finish();
             }
         });
     }
 
+    private String changeExtention(String name) {
+        String filenameArray[] = name.split("\\.");
+        String extension = filenameArray[filenameArray.length-1];
+        return name.replace("." + extension, ".mp3");
+    }
+
     private void startRecording() {
+        Utils.checkDirectory(Utils.SOUNDS_FOLDER);
+
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mRecorder.setOutputFile(Utils.WORDS_FOLDER + File.separator + fileName + ".mp3");
+        mRecorder.setOutputFile(Utils.SOUNDS_FOLDER + File.separator + soundName);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         try {
@@ -90,7 +101,7 @@ public class RecordSoundActivity extends Activity {
     private void startPlaying() {
         mPlayer = new MediaPlayer();
         try {
-            mPlayer.setDataSource(Utils.WORDS_FOLDER + File.separator + fileName + ".mp3");
+            mPlayer.setDataSource(Utils.SOUNDS_FOLDER + File.separator + soundName);
             mPlayer.prepare();
             mPlayer.start();
         } catch (IOException e) {

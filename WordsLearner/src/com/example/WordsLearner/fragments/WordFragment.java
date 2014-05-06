@@ -61,7 +61,7 @@ public class WordFragment extends Fragment {
         }
 
         protected Bitmap doInBackground(Void... args) {
-            return Utils.decodeSampledBitmapFromFile(new File(Utils.WORDS_FOLDER, word.getImagePath()), screenSize.x, screenSize.y);
+            return Utils.decodeSampledBitmapFromFile(new File(Utils.IMAGES_FOLDER, word.getImagePath()), screenSize.x, screenSize.y);
         }
 
         protected void onPostExecute(Bitmap bitmap) {

@@ -78,6 +78,7 @@ public class LearningActivity extends Activity {
 
         //select fragment on word which item was clicked
         if(scrollToClicked) {
+            scrollToClicked = false;
             for(int i = 0; i < data.size(); i++) {
                 if(data.get(i).getId() == firstWordId) {
                     viewPager.setCurrentItem(i);
@@ -90,7 +91,7 @@ public class LearningActivity extends Activity {
     private void startPlaying(String fileName) {
         mPlayer = new MediaPlayer();
         try {
-            mPlayer.setDataSource(Utils.WORDS_FOLDER + File.separator + fileName);
+            mPlayer.setDataSource(Utils.SOUNDS_FOLDER + File.separator + fileName);
             mPlayer.prepare();
             mPlayer.start();
         } catch (IOException e) {

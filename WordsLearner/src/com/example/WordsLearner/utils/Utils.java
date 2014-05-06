@@ -8,7 +8,9 @@ import java.io.File;
 
 public class Utils {
 
-    public static final String WORDS_FOLDER = Environment.getExternalStorageDirectory() + File.separator + "WordsLearner";
+    public static final String WORDS_LEARNER_FOLDER = Environment.getExternalStorageDirectory() + File.separator + "WordsLearner";
+    public static final String IMAGES_FOLDER = WORDS_LEARNER_FOLDER + File.separator + "Images";
+    public static final String SOUNDS_FOLDER = WORDS_LEARNER_FOLDER + File.separator + "Sounds";
 
     public static Bitmap decodeSampledBitmapFromFile(File file, int reqWidth, int reqHeight) {
 
@@ -46,5 +48,13 @@ public class Utils {
         }
 
         return inSampleSize;
+    }
+
+    public static void checkDirectory(String folder) {
+        File dir = new File (folder);
+        if (!dir.exists())
+        {
+            dir.mkdirs();
+        }
     }
 }

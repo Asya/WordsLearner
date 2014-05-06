@@ -68,7 +68,7 @@ public class ChoosePhotoActivity extends Activity {
     }
 
     private File createImageFile() throws IOException {
-        File storageDir = new File(Utils.WORDS_FOLDER);
+        File storageDir = new File(Utils.IMAGES_FOLDER);
         if (!storageDir.exists()) {
             storageDir.mkdirs();
             storageDir.createNewFile();
@@ -121,7 +121,7 @@ public class ChoosePhotoActivity extends Activity {
             dialog.show();
         } else {
             File file = new File(imageFilePath);
-            copyFile(file.getParent(), file.getName(), Utils.WORDS_FOLDER);
+            copyFile(file.getParent(), file.getName(), Utils.IMAGES_FOLDER);
             currentPhotoName = file.getName();
         }
     }
@@ -130,12 +130,7 @@ public class ChoosePhotoActivity extends Activity {
         InputStream in;
         OutputStream out;
         try {
-            //create output directory if it doesn't exist
-            File dir = new File (outputPath);
-            if (!dir.exists())
-            {
-                dir.mkdirs();
-            }
+            Utils.checkDirectory(Utils.IMAGES_FOLDER);
 
             in = new FileInputStream(inputPath + File.separator + inputFile);
             out = new FileOutputStream(outputPath + File.separator + inputFile);
