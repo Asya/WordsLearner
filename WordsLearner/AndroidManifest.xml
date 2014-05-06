@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ChoosePhoto"/>
+        <activity android:name=".activities.LearningActivity"/>
 
     </application>
 </manifest>

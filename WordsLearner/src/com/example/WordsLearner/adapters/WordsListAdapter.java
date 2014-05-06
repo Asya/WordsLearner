@@ -16,7 +16,7 @@ import com.fortysevendeg.swipelistview.SwipeListView;
 import java.io.File;
 import java.util.List;
 
-public class WordsAdapter extends BaseAdapter {
+public class WordsListAdapter extends BaseAdapter {
 
     private List<Word> data;
     private Context context;
@@ -24,7 +24,7 @@ public class WordsAdapter extends BaseAdapter {
     public ImageLoader imageLoader;
 
 
-    public WordsAdapter(Context context, List<Word> data, WordsListActivity.CloseListMenuListener closeListMenuListener) {
+    public WordsListAdapter(Context context, List<Word> data, WordsListActivity.CloseListMenuListener closeListMenuListener) {
         this.context = context;
         this.data = data;
         this.closeListMenuListener = closeListMenuListener;

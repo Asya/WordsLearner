@@ -1,7 +1,12 @@
 package com.example.WordsLearner.model;
 
 
-public class Word {
+import java.io.Serializable;
+
+public class Word implements Serializable{
+
+    public final static String WORD_ID_EXTRA = "word_id";
+    public final static String WORD_EXTRA = "word";
 
     private int id;
     private String imagePath;

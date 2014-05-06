@@ -5,10 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import com.example.WordsLearner.adapters.WordsAdapter;
+import com.example.WordsLearner.adapters.WordsListAdapter;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.model.Word;
@@ -20,7 +19,7 @@ import java.util.List;
 
 public class WordsListActivity extends Activity {
 
-    private WordsAdapter adapter;
+    private WordsListAdapter adapter;
     private List<Word> words;
 
     private SwipeListView swipeListView;
@@ -34,7 +33,7 @@ public class WordsListActivity extends Activity {
         setContentView(R.layout.activity_words_list);
 
         words = new ArrayList<Word>();
-        adapter = new WordsAdapter(this, words, new CloseListMenuListener());
+        adapter = new WordsListAdapter(this, words, new CloseListMenuListener());
 
         swipeListView = (SwipeListView) findViewById(R.id.example_lv_list);
         swipeListView.setSwipeListViewListener(new BaseSwipeListViewListener() {
@@ -64,6 +63,9 @@ public class WordsListActivity extends Activity {
 
             @Override
             public void onClickFrontView(int position) {
+                Intent intent = new Intent(WordsListActivity.this, LearningActivity.class);
+                intent.putExtra(Word.WORD_ID_EXTRA, words.get(position).getId());
+                startActivity(intent);
             }
 
             @Override
@@ -97,14 +99,18 @@ public class WordsListActivity extends Activity {
         swipeListView.setSwipeOpenOnLongPress(true);
 
         new LisWordsTask().execute();
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getString(R.string.loading));
-        progressDialog.setCancelable(false);
-        progressDialog.show();
     }
 
     public class LisWordsTask extends AsyncTask<Void, Void, List<Word>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(WordsListActivity.this);
+            progressDialog.setMessage(getString(R.string.loading));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
 
         protected List<Word> doInBackground(Void... args) {
             WordsLearnerDataHelper db = new WordsLearnerDataHelper(WordsListActivity.this);
