@@ -3,7 +3,9 @@
           package="com.example.WordsLearner"
           android:versionCode="1"
           android:versionName="1.0">
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <uses-sdk android:minSdkVersion="15"/>
@@ -16,8 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ChoosePhoto"/>
+        <activity android:name=".activities.ChoosePhotoActivity"/>
         <activity android:name=".activities.LearningActivity"/>
+        <activity android:name=".activities.RecordSoundActivity"/>
 
     </application>
 </manifest>

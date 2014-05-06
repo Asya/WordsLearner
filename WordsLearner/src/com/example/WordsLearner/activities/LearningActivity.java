@@ -2,25 +2,34 @@ package com.example.WordsLearner.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.adapters.WordsPagerAdapter;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.model.Word;
+import com.example.WordsLearner.utils.Utils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class LearningActivity extends Activity {
 
+    private final static String LOG_TAG = "LearnWords";
+
     public final static String SCROOL_TO_CLICKED = "scroll_to_clicked";
 
     private ViewPager viewPager;
     private WordsPagerAdapter pagerAdapter;
     private ProgressDialog progressDialog;
+
+    private MediaPlayer mPlayer = null;
 
     private int firstWordId;
     private boolean scrollToClicked = true;
@@ -38,7 +47,7 @@ public class LearningActivity extends Activity {
         new LisWordsTask().execute();
     }
 
-    private void initViewPager(List<Word> data){
+    private void initViewPager(final List<Word> data){
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -47,6 +56,7 @@ public class LearningActivity extends Activity {
 
             @Override
             public void onPageSelected(int i) {
+                startPlaying(data.get(i).getSoundPath());
             }
 
             @Override
@@ -76,6 +86,18 @@ public class LearningActivity extends Activity {
             }
         }
     }
+
+    private void startPlaying(String fileName) {
+        mPlayer = new MediaPlayer();
+        try {
+            mPlayer.setDataSource(Utils.WORDS_FOLDER + File.separator + fileName);
+            mPlayer.prepare();
+            mPlayer.start();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
+        }
+    }
+
 
     public class LisWordsTask extends AsyncTask<Void, Void, List<Word>> {
 
@@ -118,4 +140,15 @@ public class LearningActivity extends Activity {
             progressDialog = null;
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (mPlayer != null) {
+            mPlayer.release();
+            mPlayer = null;
+        }
+    }
+
 }

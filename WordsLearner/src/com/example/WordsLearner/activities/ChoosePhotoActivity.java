@@ -10,18 +10,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import com.example.WordsLearner.R;
-import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.model.Word;
 import com.example.WordsLearner.utils.Utils;
 
 import java.io.*;
 
-public class ChoosePhoto extends Activity {
+public class ChoosePhotoActivity extends Activity {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PICK_IMAGE = 2;
 
-    private static String mCurrentPhotoName;
+    private static String currentPhotoName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +79,7 @@ public class ChoosePhoto extends Activity {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-        mCurrentPhotoName = image.getName();
+        currentPhotoName = image.getName();
         return image;
     }
 
@@ -88,10 +87,19 @@ public class ChoosePhoto extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE && data != null && data.getData() != null) {
             getExistingImage(data);
+            goToNextStep();
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            saveToDB(mCurrentPhotoName);
+            goToNextStep();
         }
+
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void goToNextStep() {
+        Intent intent = new Intent(ChoosePhotoActivity.this, RecordSoundActivity.class);
+        intent.putExtra(Word.WORD_PHOTO_EXTRA, currentPhotoName);
+        startActivity(intent);
+        finish();
     }
 
     private void getExistingImage(Intent data) {
@@ -114,7 +122,7 @@ public class ChoosePhoto extends Activity {
         } else {
             File file = new File(imageFilePath);
             copyFile(file.getParent(), file.getName(), Utils.WORDS_FOLDER);
-            saveToDB(file.getName());
+            currentPhotoName = file.getName();
         }
     }
 
@@ -151,10 +159,5 @@ public class ChoosePhoto extends Activity {
             e.printStackTrace();
         }
 
-    }
-
-    private void saveToDB(String imagePath) {
-        WordsLearnerDataHelper db = new WordsLearnerDataHelper(this);
-        db.addWord(new Word(imagePath, null, null));
     }
 }
