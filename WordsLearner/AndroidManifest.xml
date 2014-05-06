@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ChoosePhotoActivity"/>
-        <activity android:name=".activities.LearningActivity"/>
+        <activity android:name=".activities.LearningActivity" android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".activities.RecordSoundActivity"/>
 
     </application>

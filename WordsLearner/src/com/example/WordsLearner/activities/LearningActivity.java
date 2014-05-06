@@ -61,15 +61,6 @@ public class LearningActivity extends Activity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if (state == ViewPager.SCROLL_STATE_IDLE) {
-                    int curr = viewPager.getCurrentItem();
-                    int lastReal = viewPager.getAdapter().getCount() - 2;
-                    if (curr == 0) {
-                        viewPager.setCurrentItem(lastReal, false);
-                    } else if (curr > lastReal) {
-                        viewPager.setCurrentItem(1, false);
-                    }
-                }
             }
         });
 

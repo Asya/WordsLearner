@@ -40,6 +40,10 @@ public class WordFragment extends Fragment {
         this.word = word;
     }
 
+    public Word getWord() {
+        return word;
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
