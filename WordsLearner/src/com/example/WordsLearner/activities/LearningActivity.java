@@ -10,7 +10,9 @@ import com.example.WordsLearner.adapters.WordsPagerAdapter;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.model.Word;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class LearningActivity extends Activity {
 
@@ -88,7 +90,9 @@ public class LearningActivity extends Activity {
 
         protected List<Word> doInBackground(Void... args) {
             WordsLearnerDataHelper db = new WordsLearnerDataHelper(LearningActivity.this);
-            return db.getAllWords();
+            List<Word> result =  db.getAllWords();
+            Collections.shuffle(result, new Random());
+            return result;
         }
 
         protected void onPostExecute(List<Word> result) {
