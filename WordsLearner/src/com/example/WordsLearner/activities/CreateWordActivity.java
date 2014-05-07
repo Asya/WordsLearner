@@ -2,16 +2,18 @@ package com.example.WordsLearner.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
+import com.example.WordsLearner.views.OneSideViewPager;
+import com.viewpagerindicator.CirclePageIndicator;
 
 public class CreateWordActivity extends Activity {
 
     private String currentPhotoName;
     private String currentSoundName;
 
-    private ViewPager viewPager;
+    private OneSideViewPager viewPager;
+    private CirclePageIndicator circlePageIndicator;
 
     public String getCurrentPhotoName() {
         return currentPhotoName;
@@ -35,8 +37,11 @@ public class CreateWordActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_word);
 
-        viewPager = (ViewPager)findViewById(R.id.pager);
+        viewPager = (OneSideViewPager)findViewById(R.id.pager);
         viewPager.setAdapter(new CreateWordPagerAdapter(getFragmentManager()));
+
+        circlePageIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
+        circlePageIndicator.setViewPager(viewPager);
     }
 
     public void goToNextStep(int position) {

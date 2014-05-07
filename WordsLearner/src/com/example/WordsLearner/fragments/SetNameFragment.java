@@ -1,12 +1,8 @@
 package com.example.WordsLearner.fragments;
 
 import android.app.Fragment;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,10 +12,6 @@ import com.example.WordsLearner.activities.CreateWordActivity;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.model.Word;
-import com.example.WordsLearner.utils.Utils;
-
-import java.io.File;
-import java.io.IOException;
 
 public class SetNameFragment extends Fragment {
 
@@ -40,7 +32,7 @@ public class SetNameFragment extends Fragment {
                 String soundName = ((CreateWordActivity)getActivity()).getCurrentSoundName();
 
                 WordsLearnerDataHelper db = new WordsLearnerDataHelper(getActivity());
-                db.addWord(new Word(imageName, soundName, nameEdit.getText().toString()));
+                 db.addWord(new Word(imageName, soundName, nameEdit.getText().toString()));
                 ((CreateWordActivity)getActivity()).goToNextStep(CreateWordPagerAdapter.FRAGMENT_NAME);
 
                 getActivity().finish();
