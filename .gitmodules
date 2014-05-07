@@ -1,6 +1,6 @@
 [submodule "pager-indicator-library"]
 	path = pager-indicator-library
-	url = git@github.com:Asya/Android-ViewPagerIndicator.git
+	url = https://github.com/Asya/Android-ViewPagerIndicator.git
 [submodule "android-swipelistview"]
 	path = android-swipelistview
-	url = git@github.com:Asya/android-swipelistview.git
+	url = https://github.com/Asya/android-swipelistview.git
