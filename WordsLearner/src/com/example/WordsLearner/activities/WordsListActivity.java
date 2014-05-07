@@ -10,6 +10,7 @@ import android.widget.Button;
 import com.example.WordsLearner.adapters.WordsListAdapter;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
+import com.example.WordsLearner.fragments.ChoosePhotoFragment;
 import com.example.WordsLearner.model.Word;
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
@@ -85,7 +86,7 @@ public class WordsListActivity extends Activity {
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(WordsListActivity.this, ChoosePhotoActivity.class));
+                startActivity(new Intent(WordsListActivity.this, CreateWordActivity.class));
             }
         });
     }

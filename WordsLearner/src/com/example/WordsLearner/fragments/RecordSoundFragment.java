@@ -1,43 +1,40 @@
-package com.example.WordsLearner.activities;
+package com.example.WordsLearner.fragments;
 
-import android.app.Activity;
+import android.app.Fragment;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import com.example.WordsLearner.R;
-import com.example.WordsLearner.db.WordsLearnerDataHelper;
-import com.example.WordsLearner.model.Word;
+import com.example.WordsLearner.activities.CreateWordActivity;
+import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
 import com.example.WordsLearner.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
 
-public class RecordSoundActivity extends Activity {
+public class RecordSoundFragment extends Fragment {
 
     private final static String LOG_TAG = "RecordSound";
 
     private MediaRecorder mRecorder = null;
     private MediaPlayer mPlayer = null;
 
-    private String imageName;
-    private String soundName;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_record_sound);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        View rootView = inflater.inflate(R.layout.fragment_record_sound, container, false);
 
-        imageName = getIntent().getStringExtra(Word.WORD_PHOTO_EXTRA);
-        soundName = changeExtention(imageName);
-
-        Button recordBtn = (Button)findViewById(R.id.btn_record);
-        Button listenBtn = (Button)findViewById(R.id.btn_listen);
-        Button saveBtn = (Button)findViewById(R.id.btn_save);
+        Button recordBtn = (Button)rootView.findViewById(R.id.btn_record);
+        Button listenBtn = (Button)rootView.findViewById(R.id.btn_listen);
+        Button saveBtn = (Button)rootView.findViewById(R.id.btn_save);
 
         recordBtn.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -61,21 +58,15 @@ public class RecordSoundActivity extends Activity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WordsLearnerDataHelper db = new WordsLearnerDataHelper(RecordSoundActivity.this);
-                db.addWord(new Word(imageName, soundName, null));
-                finish();
+            ((CreateWordActivity)getActivity()).goToNextStep(CreateWordPagerAdapter.FRAGMENT_NAME);
             }
         });
-    }
-
-    private String changeExtention(String name) {
-        String filenameArray[] = name.split("\\.");
-        String extension = filenameArray[filenameArray.length-1];
-        return name.replace("." + extension, ".mp3");
+        return rootView;
     }
 
     private void startRecording() {
         Utils.checkDirectory(Utils.SOUNDS_FOLDER);
+        String soundName = ((CreateWordActivity)getActivity()).getCurrentSoundName();
 
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -99,6 +90,8 @@ public class RecordSoundActivity extends Activity {
     }
 
     private void startPlaying() {
+        String soundName = ((CreateWordActivity)getActivity()).getCurrentSoundName();
+
         mPlayer = new MediaPlayer();
         try {
             mPlayer.setDataSource(Utils.SOUNDS_FOLDER + File.separator + soundName);
@@ -122,5 +115,4 @@ public class RecordSoundActivity extends Activity {
             mPlayer = null;
         }
     }
-
 }

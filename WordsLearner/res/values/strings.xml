@@ -9,15 +9,18 @@
     <string name="add_item">Add Item</string>
     <string name="loading">Loading</string>
 
-    <!-- Choose photo activity -->
+    <!-- Choose photo fragment -->
     <string name="select_photo">Select Photo</string>
     <string name="camera">Camera</string>
     <string name="no_photo_permissions">This image does not exists or you have no permissions to use it</string>
     <string name="error">Error</string>
 
-    <!-- Record sound activity -->
+    <!-- Record sound fragment -->
     <string name="record">Record</string>
     <string name="listen">Listen</string>
     <string name="save">Save</string>
+
+    <!-- Record sound fragment -->
+    <string name="name">Name</string>
 
 </resources>

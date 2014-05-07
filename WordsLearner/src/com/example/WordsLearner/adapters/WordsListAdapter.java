@@ -109,7 +109,6 @@ public class WordsListAdapter extends BaseAdapter {
         }
     }
 
-
     static class ViewHolder {
         ImageView ivImage;
         TextView tvTitle;
