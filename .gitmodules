@@ -1,0 +1,3 @@
+[submodule "pager-indicator-library"]
+	path = pager-indicator-library
+	url = git@github.com:Asya/Android-ViewPagerIndicator.git
