@@ -19,6 +19,14 @@ public class WordsPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        if(position == 0) {
+            position = data.size() - 1;
+        } else if(position == data.size() + 1) {
+            position = 0;
+        } else {
+            position = position - 1;
+        }
+
         WordFragment fragment = new WordFragment();
         fragment.setWord(data.get(position));
         return fragment;
@@ -26,6 +34,6 @@ public class WordsPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return data.size();
+        return data.size() + 2;
     }
 }

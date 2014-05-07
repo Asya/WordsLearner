@@ -97,11 +97,18 @@ public class WordsListAdapter extends BaseAdapter {
         WordsLearnerDataHelper db = new WordsLearnerDataHelper(context);
         db.deleteWord(word);
 
-        File file = new File(word.getImagePath());
+        deleteFile(word.getImagePath());
+        deleteFile(word.getSoundPath());
+
+    }
+
+    private void deleteFile(String path) {
+        File file = new File(path);
         if (!file.exists()) {
             file.delete();
         }
     }
+
 
     static class ViewHolder {
         ImageView ivImage;

@@ -23,7 +23,7 @@ public class LearningActivity extends Activity {
 
     private final static String LOG_TAG = "LearnWords";
 
-    public final static String SCROOL_TO_CLICKED = "scroll_to_clicked";
+    public final static String SCROLL_TO_CLICKED = "scroll_to_clicked";
 
     private ViewPager viewPager;
     private WordsPagerAdapter pagerAdapter;
@@ -41,7 +41,7 @@ public class LearningActivity extends Activity {
 
         firstWordId = getIntent().getIntExtra(Word.WORD_ID_EXTRA, -1);
         if (savedInstanceState != null) {
-            scrollToClicked = savedInstanceState.getBoolean(SCROOL_TO_CLICKED);
+            scrollToClicked = savedInstanceState.getBoolean(SCROLL_TO_CLICKED);
         }
 
         new LisWordsTask().execute();
@@ -49,6 +49,7 @@ public class LearningActivity extends Activity {
 
     private void initViewPager(final List<Word> data){
         viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
@@ -56,11 +57,20 @@ public class LearningActivity extends Activity {
 
             @Override
             public void onPageSelected(int i) {
-                startPlaying(data.get(i).getSoundPath());
+                if(i != 0 && i != data.size() + 1) {
+                    startPlaying(data.get(i - 1).getSoundPath());
+                }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
+                if(state == ViewPager.SCROLL_STATE_IDLE)
+                if(viewPager.getCurrentItem() == 0) {
+                    viewPager.setCurrentItem(data.size(), false);
+                }
+                else if(viewPager.getCurrentItem() == data.size() + 1) {
+                    viewPager.setCurrentItem(1, false); // should be at least 1 non-fake item
+                }
             }
         });
 
@@ -72,7 +82,7 @@ public class LearningActivity extends Activity {
             scrollToClicked = false;
             for(int i = 0; i < data.size(); i++) {
                 if(data.get(i).getId() == firstWordId) {
-                    viewPager.setCurrentItem(i);
+                    viewPager.setCurrentItem(i + 1); // #0 item is a fake item
                     break;
                 }
             }
@@ -105,7 +115,7 @@ public class LearningActivity extends Activity {
         protected List<Word> doInBackground(Void... args) {
             WordsLearnerDataHelper db = new WordsLearnerDataHelper(LearningActivity.this);
             List<Word> result =  db.getAllWords();
-            Collections.shuffle(result, new Random());
+//            Collections.shuffle(result, new Random());
             return result;
         }
 
@@ -121,7 +131,7 @@ public class LearningActivity extends Activity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(SCROOL_TO_CLICKED, false);
+        outState.putBoolean(SCROLL_TO_CLICKED, false);
     }
 
     @Override
