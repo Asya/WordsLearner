@@ -1,31 +1,32 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background_app"
-                tools:context=".MainActivity$PlaceholderFragment">
+                android:background="@color/background_app">
 
-    <Button
-            android:text="@string/record"
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:id="@+id/btn_record"/>
-    <Button
-            android:text="@string/listen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_record"
-            android:id="@+id/btn_listen"
-            android:layout_centerHorizontal="true"
-            android:enabled="false"/>
+            android:layout_gravity="center"
+            android:gravity="center">
+        <Button
+                android:text="@string/record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_record"/>
+        <Button
+                android:text="@string/listen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_listen"
+                android:enabled="false"/>
 
-    <Button
-            android:text="@string/next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_listen"
-            android:id="@+id/btn_next"
-            android:layout_centerHorizontal="true"
-            android:enabled="false"/>
-</RelativeLayout>
+        <Button
+                android:text="@string/next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_next"
+                android:enabled="false"/>
+    </LinearLayout>
+
+</FrameLayout>

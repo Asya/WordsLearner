@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.activities.CreateWordActivity;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
@@ -25,11 +26,14 @@ public class ChoosePhotoFragment extends Fragment {
     public static final int PICK_IMAGE = 2;
 
     private Button btnNext;
+    private ImageView imagePreview;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_choose_photo, container, false);
+
+        imagePreview = (ImageView) rootView.findViewById(R.id.img_preview);
 
         Button btnSelect = (Button) rootView.findViewById(R.id.btn_select);
         btnSelect.setOnClickListener(new View.OnClickListener() {
@@ -65,12 +69,19 @@ public class ChoosePhotoFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ChoosePhotoFragment.PICK_IMAGE && data != null && data.getData() != null) {
             getExistingImage(data);
+            setPreview();
             setNextButtonEnabled();
         } else if (requestCode == ChoosePhotoFragment.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            setPreview();
             setNextButtonEnabled();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void setPreview() {
+        File imageFile = new File(Utils.IMAGES_FOLDER, ((CreateWordActivity)getActivity()).getCurrentPhotoName());
+        imagePreview.setImageBitmap(Utils.decodeSampledBitmapFromFile(imageFile, 150, 150));
     }
 
     private void setNextButtonEnabled() {

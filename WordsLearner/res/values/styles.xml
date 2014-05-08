@@ -86,4 +86,8 @@
         <item name="android:layout_height">@dimen/line_default</item>
     </style>
 
+    <style name="Activity"  parent="@android:style/Theme.Holo.Light">
+        <item name="android:background">@color/background_app</item>
+    </style>
+
 </resources>

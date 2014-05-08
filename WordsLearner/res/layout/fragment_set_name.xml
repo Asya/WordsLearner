@@ -1,24 +1,29 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background_app"
-                tools:context=".MainActivity$PlaceholderFragment">
+                android:background="@color/background_app">
 
-    <EditText
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:id="@+id/edit_name"
-            android:hint="@string/name"/>
-
-    <Button
-            android:text="@string/save"
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/edit_name"
-            android:id="@+id/btn_save"
-            android:layout_centerHorizontal="true"
-            android:textColor="@android:color/black"
-            android:singleLine="true"/>
-</RelativeLayout>
+            android:layout_gravity="center"
+            android:gravity="center">
+
+        <EditText
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_name"
+                android:hint="@string/name"/>
+
+        <Button
+                android:text="@string/save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_save"
+                android:textColor="@android:color/black"
+                android:singleLine="true"/>
+
+    </LinearLayout>
+
+</FrameLayout>
