@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/btn_record"
             android:id="@+id/btn_listen"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:enabled="false"/>
 
     <Button
             android:text="@string/next"
