@@ -14,13 +14,14 @@
     <string name="camera">Camera</string>
     <string name="no_photo_permissions">This image does not exists or you have no permissions to use it</string>
     <string name="error">Error</string>
+    <string name="next">Next</string>
 
     <!-- Record sound fragment -->
     <string name="record">Record</string>
     <string name="listen">Listen</string>
-    <string name="save">Save</string>
 
     <!-- Record sound fragment -->
     <string name="name">Name</string>
+    <string name="save">Save</string>
 
 </resources>

@@ -5,12 +5,21 @@
                 android:background="@color/background_app"
                 tools:context=".MainActivity$PlaceholderFragment">
 
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/img_thumb"
+            android:src="@drawable/ic_launcher"
+            android:padding="10dp"/>
     <Button
             android:text="@string/select_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:id="@+id/btn_select"/>
+            android:id="@+id/btn_select"
+            android:layout_below="@id/img_thumb"
+            />
     <Button
             android:text="@string/camera"
             android:layout_width="wrap_content"
@@ -18,4 +27,12 @@
             android:layout_below="@id/btn_select"
             android:id="@+id/btn_camera"
             android:layout_centerHorizontal="true"/>
+    <Button
+            android:text="@string/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_camera"
+            android:id="@+id/btn_next"
+            android:layout_centerHorizontal="true"
+            android:enabled="false"/>
 </RelativeLayout>

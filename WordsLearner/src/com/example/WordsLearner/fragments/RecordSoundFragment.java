@@ -25,7 +25,7 @@ public class RecordSoundFragment extends Fragment {
     private MediaRecorder mRecorder = null;
     private MediaPlayer mPlayer = null;
 
-
+    private Button nextBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class RecordSoundFragment extends Fragment {
 
         Button recordBtn = (Button)rootView.findViewById(R.id.btn_record);
         Button listenBtn = (Button)rootView.findViewById(R.id.btn_listen);
-        Button saveBtn = (Button)rootView.findViewById(R.id.btn_save);
+        nextBtn = (Button)rootView.findViewById(R.id.btn_next);
 
         recordBtn.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -55,10 +55,10 @@ public class RecordSoundFragment extends Fragment {
             }
         });
 
-        saveBtn.setOnClickListener(new View.OnClickListener() {
+        nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            ((CreateWordActivity)getActivity()).goToNextStep(CreateWordPagerAdapter.FRAGMENT_NAME);
+                ((CreateWordActivity) getActivity()).goToNextStep(CreateWordPagerAdapter.FRAGMENT_NAME);
             }
         });
         return rootView;
@@ -87,6 +87,13 @@ public class RecordSoundFragment extends Fragment {
         mRecorder.stop();
         mRecorder.release();
         mRecorder = null;
+        setNextButtonEnabled();
+    }
+
+    private void setNextButtonEnabled() {
+        if(((CreateWordActivity)getActivity()).getCurrentSoundName() != null) {
+            nextBtn.setEnabled(true);
+        }
     }
 
     private void startPlaying() {

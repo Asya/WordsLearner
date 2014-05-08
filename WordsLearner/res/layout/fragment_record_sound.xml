@@ -20,10 +20,11 @@
             android:layout_centerHorizontal="true"/>
 
     <Button
-            android:text="@string/save"
+            android:text="@string/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/btn_listen"
-            android:id="@+id/btn_save"
-            android:layout_centerHorizontal="true"/>
+            android:id="@+id/btn_next"
+            android:layout_centerHorizontal="true"
+            android:enabled="false"/>
 </RelativeLayout>

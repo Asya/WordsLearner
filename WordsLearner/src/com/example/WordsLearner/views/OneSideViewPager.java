@@ -7,9 +7,6 @@ import android.view.MotionEvent;
 
 public class OneSideViewPager extends ViewPager {
 
-        float lastX = 0;
-        boolean lockScroll = false;
-
         public OneSideViewPager(Context context, AttributeSet attrs) {
             super(context, attrs);
         }
@@ -20,28 +17,6 @@ public class OneSideViewPager extends ViewPager {
 
         @Override
         public boolean onTouchEvent(MotionEvent ev) {
-            switch (ev.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    lastX = ev.getX();
-                    lockScroll = false;
-                    return super.onTouchEvent(ev);
-                case MotionEvent.ACTION_MOVE:
-                    if (lastX > ev.getX()) {
-                        lockScroll = true; //swipe right
-                    } else {
-                        lockScroll = false; //swipe left
-                    }
-
-                    lastX = ev.getX();
-                    break;
-            }
-
-            lastX = ev.getX();
-
-            if(lockScroll) {
-                return false;
-            } else {
-                return super.onTouchEvent(ev);
-            }
+            return false;
         }
     }

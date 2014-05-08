@@ -24,6 +24,8 @@ public class ChoosePhotoFragment extends Fragment {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int PICK_IMAGE = 2;
 
+    private Button btnNext;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -47,6 +49,15 @@ public class ChoosePhotoFragment extends Fragment {
                 dispatchTakePictureIntent();
             }
         });
+
+        btnNext = (Button) rootView.findViewById(R.id.btn_next);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((CreateWordActivity)getActivity()).goToNextStep(CreateWordPagerAdapter.FRAGMENT_SOUND);
+            }
+        });
+
         return rootView;
     }
 
@@ -54,12 +65,18 @@ public class ChoosePhotoFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ChoosePhotoFragment.PICK_IMAGE && data != null && data.getData() != null) {
             getExistingImage(data);
-            ((CreateWordActivity)getActivity()).goToNextStep(CreateWordPagerAdapter.FRAGMENT_SOUND);
+            setNextButtonEnabled();
         } else if (requestCode == ChoosePhotoFragment.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            ((CreateWordActivity)getActivity()).goToNextStep(CreateWordPagerAdapter.FRAGMENT_SOUND);
+            setNextButtonEnabled();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void setNextButtonEnabled() {
+        if(((CreateWordActivity)getActivity()).getCurrentPhotoName() != null) {
+            btnNext.setEnabled(true);
+        }
     }
 
     private void getExistingImage(Intent data) {
