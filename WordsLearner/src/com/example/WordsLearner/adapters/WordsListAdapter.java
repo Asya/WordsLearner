@@ -50,6 +50,8 @@ public class WordsListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Word word = getItem(position);
+        final SwipeListView swipeListView = ((SwipeListView)parent);
+
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -64,7 +66,7 @@ public class WordsListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        ((SwipeListView)parent).recycle(convertView, position);
+        swipeListView.recycle(convertView, position);
 
         imageLoader.DisplayImage(word.getImagePath(), holder.ivImage);
         if(word.getName() != null) {
@@ -80,6 +82,9 @@ public class WordsListAdapter extends BaseAdapter {
                 intent.putExtra(Word.WORD_EXTRA, word);
                 intent.putExtra(CreateWordActivity.MODE_EXTRA, CreateWordActivity.MODE_EDIT);
                 context.startActivity(intent);
+
+                // necessary hack fix problem with backView getting click events when its hidden after we go back to activity
+                swipeListView.closeOpenedItems();
             }
         });
 
