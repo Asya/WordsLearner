@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.activities.CreateWordActivity;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
+import com.example.WordsLearner.model.Word;
 import com.example.WordsLearner.utils.Utils;
 
 import java.io.*;
@@ -62,6 +63,9 @@ public class ChoosePhotoFragment extends Fragment {
             }
         });
 
+        setPreview();
+        setNextButtonEnabled();
+
         return rootView;
     }
 
@@ -80,12 +84,16 @@ public class ChoosePhotoFragment extends Fragment {
     }
 
     private void setPreview() {
-        File imageFile = new File(Utils.IMAGES_FOLDER, ((CreateWordActivity)getActivity()).getCurrentPhotoName());
-        imagePreview.setImageBitmap(Utils.decodeSampledBitmapFromFile(imageFile, 150, 150));
+        Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
+        if(word != null && word.getImagePath() != null) {
+            File imageFile = new File(Utils.IMAGES_FOLDER, word.getImagePath());
+            imagePreview.setImageBitmap(Utils.decodeSampledBitmapFromFile(imageFile, 150, 150));
+        }
     }
 
     private void setNextButtonEnabled() {
-        if(((CreateWordActivity)getActivity()).getCurrentPhotoName() != null) {
+        Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
+        if(word != null && word.getImagePath() != null) {
             btnNext.setEnabled(true);
         }
     }

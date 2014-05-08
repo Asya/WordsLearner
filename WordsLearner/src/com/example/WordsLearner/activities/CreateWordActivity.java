@@ -4,32 +4,36 @@ import android.app.Activity;
 import android.os.Bundle;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
+import com.example.WordsLearner.model.Word;
 import com.example.WordsLearner.views.OneSideViewPager;
 import com.viewpagerindicator.CirclePageIndicator;
 
 public class CreateWordActivity extends Activity {
 
-    private String currentPhotoName;
-    private String currentSoundName;
+    public final static String MODE_EXTRA = "mode_extra";
+    public final static int MODE_CREATE = 0;
+    public final static int MODE_EDIT = 1;
+
+    private int mode = MODE_CREATE;
+    private Word currentWord;
 
     private OneSideViewPager viewPager;
     private CirclePageIndicator circlePageIndicator;
 
-    public String getCurrentPhotoName() {
-        return currentPhotoName;
+    public Word getCurrentWord() {
+        return currentWord;
     }
 
     public void setCurrentPhotoName(String currentPhotoName) {
-        this.currentPhotoName = currentPhotoName;
-        this.currentSoundName = changeExtention(currentPhotoName);
+        if(currentWord == null) {
+            currentWord = new Word();
+        }
+        this.currentWord.setImagePath(currentPhotoName);
+        this.currentWord.setSoundPath(changeExtention(currentPhotoName));
     }
 
-    public String getCurrentSoundName() {
-        return currentSoundName;
-    }
-
-    public void setCurrentSoundName(String currentSoundName) {
-        this.currentSoundName = currentSoundName;
+    public int getMode() {
+        return mode;
     }
 
     @Override
@@ -42,6 +46,11 @@ public class CreateWordActivity extends Activity {
 
         circlePageIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
         circlePageIndicator.setViewPager(viewPager);
+
+        if(getIntent() != null) {
+            currentWord = (Word)getIntent().getSerializableExtra(Word.WORD_EXTRA);
+            mode = getIntent().getIntExtra(MODE_EXTRA, MODE_CREATE);
+        }
     }
 
     @Override

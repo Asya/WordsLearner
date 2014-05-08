@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.activities.CreateWordActivity;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
+import com.example.WordsLearner.model.Word;
 import com.example.WordsLearner.utils.Utils;
 
 import java.io.File;
@@ -62,12 +63,14 @@ public class RecordSoundFragment extends Fragment {
                 ((CreateWordActivity) getActivity()).goToNextStep(CreateWordPagerAdapter.FRAGMENT_NAME);
             }
         });
+
+        setNextListenButtonsEnabled();
         return rootView;
     }
 
     private void startRecording() {
         Utils.checkDirectory(Utils.SOUNDS_FOLDER);
-        String soundName = ((CreateWordActivity)getActivity()).getCurrentSoundName();
+        String soundName = ((CreateWordActivity)getActivity()).getCurrentWord().getSoundPath();
 
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -92,14 +95,15 @@ public class RecordSoundFragment extends Fragment {
     }
 
     private void setNextListenButtonsEnabled() {
-        if(((CreateWordActivity)getActivity()).getCurrentSoundName() != null) {
+        Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
+        if(word != null && word.getSoundPath() != null) {
             nextBtn.setEnabled(true);
             listenBtn.setEnabled(true);
         }
     }
 
     private void startPlaying() {
-        String soundName = ((CreateWordActivity)getActivity()).getCurrentSoundName();
+        String soundName = ((CreateWordActivity)getActivity()).getCurrentWord().getSoundPath();
 
         mPlayer = new MediaPlayer();
         try {

@@ -14,6 +14,9 @@ public class Word implements Serializable{
     private String name;
     private String soundPath;
 
+    public Word() {
+    }
+
     public Word(int id, String imagePath, String soundPath, String name) {
         this.id = id;
         this.imagePath = imagePath;

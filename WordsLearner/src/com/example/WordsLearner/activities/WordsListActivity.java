@@ -86,7 +86,9 @@ public class WordsListActivity extends Activity {
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(WordsListActivity.this, CreateWordActivity.class));
+                Intent intent = new Intent(WordsListActivity.this, CreateWordActivity.class);
+                intent.putExtra(CreateWordActivity.MODE_EXTRA, CreateWordActivity.MODE_CREATE);
+                startActivity(intent);
             }
         });
     }

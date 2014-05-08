@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.activities.CreateWordActivity;
-import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.model.Word;
 
@@ -28,12 +27,17 @@ public class SetNameFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imageName = ((CreateWordActivity)getActivity()).getCurrentPhotoName();
-                String soundName = ((CreateWordActivity)getActivity()).getCurrentSoundName();
+                ((CreateWordActivity)getActivity()).getCurrentWord().setName(nameEdit.getText().toString());
 
-                WordsLearnerDataHelper db = new WordsLearnerDataHelper(getActivity());
-                 db.addWord(new Word(imageName, soundName, nameEdit.getText().toString()));
-                ((CreateWordActivity)getActivity()).goToNextStep(CreateWordPagerAdapter.FRAGMENT_NAME);
+                switch (((CreateWordActivity)getActivity()).getMode()) {
+                    case CreateWordActivity.MODE_CREATE:
+                        addWordToDB();
+                        break;
+                    case CreateWordActivity.MODE_EDIT:
+                        updateWordInDB();
+                        break;
+                }
+
 
                 getActivity().finish();
             }
@@ -41,9 +45,26 @@ public class SetNameFragment extends Fragment {
         return rootView;
     }
 
+    private void updateWordInDB() {
+        WordsLearnerDataHelper db = new WordsLearnerDataHelper(getActivity());
+        Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
+        db.updateWord(word);
+    }
+
+    private void addWordToDB() {
+        WordsLearnerDataHelper db = new WordsLearnerDataHelper(getActivity());
+        Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
+        db.addWord(word);
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        nameEdit.setText(((CreateWordActivity)getActivity()).getCurrentPhotoName());
+        Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
+        if(word.getName() != null) {
+            nameEdit.setText(word.getName());
+        } else {
+            nameEdit.setText(word.getImagePath());
+        }
     }
 }

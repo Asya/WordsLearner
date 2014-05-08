@@ -2,11 +2,13 @@
 package com.example.WordsLearner.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.example.WordsLearner.R;
+import com.example.WordsLearner.activities.CreateWordActivity;
 import com.example.WordsLearner.activities.WordsListActivity;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.lazyloader.ImageLoader;
@@ -22,7 +24,6 @@ public class WordsListAdapter extends BaseAdapter {
     private Context context;
     private WordsListActivity.CloseListMenuListener closeListMenuListener;
     public ImageLoader imageLoader;
-
 
     public WordsListAdapter(Context context, List<Word> data, WordsListActivity.CloseListMenuListener closeListMenuListener) {
         this.context = context;
@@ -75,7 +76,10 @@ public class WordsListAdapter extends BaseAdapter {
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO:edit word in DB
+                Intent intent = new Intent(context, CreateWordActivity.class);
+                intent.putExtra(Word.WORD_EXTRA, word);
+                intent.putExtra(CreateWordActivity.MODE_EXTRA, CreateWordActivity.MODE_EDIT);
+                context.startActivity(intent);
             }
         });
 
