@@ -3,9 +3,12 @@ package com.example.WordsLearner.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,13 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.activities.CreateWordActivity;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
+import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.model.Word;
 import com.example.WordsLearner.utils.Utils;
 
 import java.io.*;
+import java.util.List;
 
 public class ChoosePhotoFragment extends Fragment {
 
@@ -28,6 +34,7 @@ public class ChoosePhotoFragment extends Fragment {
 
     private Button btnNext;
     private ImageView imagePreview;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,6 +42,7 @@ public class ChoosePhotoFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_choose_photo, container, false);
 
         imagePreview = (ImageView) rootView.findViewById(R.id.img_preview);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progress);
 
         Button btnSelect = (Button) rootView.findViewById(R.id.btn_select);
         btnSelect.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +71,7 @@ public class ChoosePhotoFragment extends Fragment {
             }
         });
 
-        setPreview();
-        setNextButtonEnabled();
+        new LoadPreviewAsynk().execute();
 
         return rootView;
     }
@@ -73,30 +80,14 @@ public class ChoosePhotoFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ChoosePhotoFragment.PICK_IMAGE && data != null && data.getData() != null) {
             getExistingImage(data);
-            setPreview();
-            setNextButtonEnabled();
+            new LoadPreviewAsynk().execute();
         } else if (requestCode == ChoosePhotoFragment.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            setPreview();
-            setNextButtonEnabled();
+            new LoadPreviewAsynk().execute();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void setPreview() {
-        Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
-        if(word != null && word.getImagePath() != null) {
-            File imageFile = new File(Utils.IMAGES_FOLDER, word.getImagePath());
-            imagePreview.setImageBitmap(Utils.decodeSampledBitmapFromFile(imageFile, 150, 150));
-        }
-    }
-
-    private void setNextButtonEnabled() {
-        Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
-        if(word != null && word.getImagePath() != null) {
-            btnNext.setEnabled(true);
-        }
-    }
 
     private void getExistingImage(Intent data) {
         Uri _uri = data.getData();
@@ -190,4 +181,34 @@ public class ChoosePhotoFragment extends Fragment {
         }
         return image;
     }
+
+    class LoadPreviewAsynk extends AsyncTask<Void, Void, Bitmap> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        protected Bitmap doInBackground(Void... args) {
+            Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
+            if(word != null && word.getImagePath() != null) {
+                File imageFile = new File(Utils.IMAGES_FOLDER, word.getImagePath());
+                return Utils.decodeSampledBitmapFromFile(imageFile, 150, 150);
+            }
+            return null;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            imagePreview.setImageBitmap(result);
+            progressBar.setVisibility(View.GONE);
+
+            //when image chose enable next button
+            Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
+            if(word != null && word.getImagePath() != null) {
+                btnNext.setEnabled(true);
+            }
+        }
+    }
+
 }
