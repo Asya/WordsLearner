@@ -10,8 +10,8 @@ import android.widget.Button;
 import com.example.WordsLearner.adapters.WordsListAdapter;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
-import com.example.WordsLearner.fragments.ChoosePhotoFragment;
 import com.example.WordsLearner.model.Word;
+import com.example.WordsLearner.utils.PreferencesManager;
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
 
@@ -26,11 +26,15 @@ public class WordsListActivity extends Activity {
     private SwipeListView swipeListView;
     private ProgressDialog progressDialog;
 
+    private PreferencesManager prefs;
+    private long dbTimestamp = -1;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_words_list);
+        prefs = new PreferencesManager(this);
 
         words = new ArrayList<Word>();
         adapter = new WordsListAdapter(this, words, new CloseListMenuListener());
@@ -100,7 +104,9 @@ public class WordsListActivity extends Activity {
         swipeListView.setSwipeActionLeft(SwipeListView.SWIPE_ACTION_REVEAL);
         swipeListView.setSwipeOpenOnLongPress(true);
 
-        new LisWordsTask().execute();
+        if(prefs.getDbTimestamp() != dbTimestamp) {
+            new LisWordsTask().execute();
+        }
     }
 
     public class LisWordsTask extends AsyncTask<Void, Void, List<Word>> {
@@ -108,6 +114,8 @@ public class WordsListActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            dbTimestamp = prefs.getDbTimestamp();
+
             progressDialog = new ProgressDialog(WordsListActivity.this);
             progressDialog.setMessage(getString(R.string.loading));
             progressDialog.setCancelable(false);

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import com.example.WordsLearner.model.Word;
+import com.example.WordsLearner.utils.PreferencesManager;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +28,8 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
 
     private static final String[] WORDS_COLUMNS = {KEY_ID, KEY_IMAGE_PATH, KEY_SOUND_PATH, KEY_NAME};
 
+    private Context context;
+
     private String CREATE_WORDS_TABLE = "CREATE TABLE " + TABLE_WORDS + " ( " +
             KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             KEY_IMAGE_PATH + " TEXT, "+
@@ -35,6 +38,7 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
 
     public WordsLearnerDataHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -59,6 +63,8 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
         db.insert(TABLE_WORDS, null, values);
 
         db.close();
+
+        setTimestamp();
     }
 
     public List<Word> getAllWords() {
@@ -95,6 +101,8 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
         int i = db.update(TABLE_WORDS, values, KEY_ID+" = ?", new String[] { String.valueOf(word.getId()) });
         db.close();
 
+        Log.d(LOG_TAG + "updatedWord", word.toString());
+        setTimestamp();
         return i;
     }
 
@@ -104,5 +112,10 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
         db.close();
 
         Log.d(LOG_TAG + "deleteWord", word.toString());
+        setTimestamp();
+    }
+
+    private void setTimestamp() {
+        (new PreferencesManager(context)).setDbTimestamp(System.currentTimeMillis());
     }
 }
