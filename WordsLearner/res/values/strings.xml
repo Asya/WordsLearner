@@ -24,4 +24,7 @@
     <string name="name">Name</string>
     <string name="save">Save</string>
 
+    <!-- Swipe list activity -->
+    <string name="please_click_back">Please click BACK again to exit</string>
+
 </resources>

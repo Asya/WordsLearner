@@ -5,8 +5,10 @@ import android.app.ProgressDialog;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.Toast;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.adapters.WordsPagerAdapter;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
@@ -33,6 +35,7 @@ public class LearningActivity extends Activity {
 
     private int firstWordId;
     private boolean scrollToClicked = true;
+    private boolean doubleBackToExitPressedOnce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,4 +156,22 @@ public class LearningActivity extends Activity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, getString(R.string.please_click_back), Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
 }
