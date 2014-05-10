@@ -60,20 +60,11 @@ public class LearningActivity extends Activity {
 
             @Override
             public void onPageSelected(int i) {
-                if(i != 0 && i != data.size() + 1) {
-                    startPlaying(data.get(i - 1).getSoundPath());
-                }
+                startPlaying(data.get(i).getSoundPath());
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if(state == ViewPager.SCROLL_STATE_IDLE)
-                if(viewPager.getCurrentItem() == 0) {
-                    viewPager.setCurrentItem(data.size(), false);
-                }
-                else if(viewPager.getCurrentItem() == data.size() + 1) {
-                    viewPager.setCurrentItem(1, false); // should be at least 1 non-fake item
-                }
             }
         });
 
@@ -85,7 +76,7 @@ public class LearningActivity extends Activity {
             scrollToClicked = false;
             for(int i = 0; i < data.size(); i++) {
                 if(data.get(i).getId() == firstWordId) {
-                    viewPager.setCurrentItem(i + 1); // #0 item is a fake item
+                    viewPager.setCurrentItem(i);
                     break;
                 }
             }
@@ -118,7 +109,7 @@ public class LearningActivity extends Activity {
         protected List<Word> doInBackground(Void... args) {
             WordsLearnerDataHelper db = new WordsLearnerDataHelper(LearningActivity.this);
             List<Word> result =  db.getAllWords();
-//            Collections.shuffle(result, new Random());
+            Collections.shuffle(result, new Random());
             return result;
         }
 
@@ -172,6 +163,6 @@ public class LearningActivity extends Activity {
             public void run() {
                 doubleBackToExitPressedOnce=false;
             }
-        }, 2000);
+        }, 3000);
     }
 }
