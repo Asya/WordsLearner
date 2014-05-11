@@ -68,7 +68,7 @@ public class ChoosePhotoFragment extends Fragment {
             }
         });
 
-        new LoadPreviewAsynk().execute();
+        new LoadPreviewAsync().execute();
 
         return rootView;
     }
@@ -77,9 +77,9 @@ public class ChoosePhotoFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ChoosePhotoFragment.PICK_IMAGE && data != null && data.getData() != null) {
             getExistingImage(data);
-            new LoadPreviewAsynk().execute();
+            new LoadPreviewAsync().execute();
         } else if (requestCode == ChoosePhotoFragment.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            new LoadPreviewAsynk().execute();
+            new LoadPreviewAsync().execute();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -159,7 +159,7 @@ public class ChoosePhotoFragment extends Fragment {
         return image;
     }
 
-    class LoadPreviewAsynk extends AsyncTask<Void, Void, Bitmap> {
+    class LoadPreviewAsync extends AsyncTask<Void, Void, Bitmap> {
 
         @Override
         protected void onPreExecute() {
