@@ -28,7 +28,7 @@ public class Utils {
     }
 
     public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
@@ -44,6 +44,20 @@ public class Utils {
             while ((halfHeight / inSampleSize) > reqHeight
                     || (halfWidth / inSampleSize) > reqWidth) {
                 inSampleSize++;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    public static int calculateInSampleSize2(int imageLongestEdge, int targetLongestEdge) {
+        int inSampleSize = 1;
+        if (imageLongestEdge > targetLongestEdge) {
+
+            final int halfImageLongestEdge = imageLongestEdge / 2;
+
+            while ((halfImageLongestEdge / inSampleSize) >= targetLongestEdge) {
+                inSampleSize *= 2;
             }
         }
 
@@ -79,5 +93,57 @@ public class Utils {
         // write the output file
         out.flush();
         out.close();
+    }
+
+    public static class ScaleInformation {
+        public final int bitmapSampleSize;
+        public final int width;
+        public final int height;
+
+        public ScaleInformation(int bitmapSampleSize, int width, int height) {
+            this.bitmapSampleSize = bitmapSampleSize;
+            this.width = width;
+            this.height = height;
+        }
+    }
+
+    public static ScaleInformation getInSampleSizeAndOutputDimensions(int imageWidth, int imageHeight, int desiredWidth, int desiredHeight) {
+        // Calculate inSampleSize
+        int imageLongestEdge = imageWidth >= imageHeight ? imageWidth : imageHeight;
+        boolean widthIsLongest = imageWidth >= imageHeight;
+        int targetLongestEdge = desiredWidth >= desiredHeight ? desiredWidth : desiredHeight;
+
+        int bitmapSampleSize = calculateInSampleSize2(imageLongestEdge, targetLongestEdge);
+        float scaleRatio = (float)imageLongestEdge / (float)targetLongestEdge;
+
+        return widthIsLongest ?
+            new ScaleInformation(bitmapSampleSize, targetLongestEdge, (int)(imageHeight / scaleRatio)) :
+            new ScaleInformation(bitmapSampleSize, (int)(imageWidth / scaleRatio), targetLongestEdge);
+    }
+
+    public static void copyAndResizeToScreen(String sourceImage, String outputImage, int screenWidth, int screenHeight) throws IOException {
+        // First decode with inJustDecodeBounds=true to check dimensions
+
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(sourceImage, options);
+
+        ScaleInformation scaleInfo = getInSampleSizeAndOutputDimensions(options.outWidth, options.outHeight, screenWidth, screenHeight);
+
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = scaleInfo.bitmapSampleSize;
+        Bitmap bmp = BitmapFactory.decodeFile(sourceImage, options);
+
+        // scale bitmap
+        bmp = Bitmap.createScaledBitmap(bmp, scaleInfo.width, scaleInfo.height, true);
+
+        // store into output file
+        File outputFile = new File(outputImage);
+        FileOutputStream out = new FileOutputStream(outputFile.getPath());
+
+
+        bmp.compress(Bitmap.CompressFormat.JPEG, 80, out);
     }
 }

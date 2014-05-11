@@ -6,10 +6,12 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +87,6 @@ public class ChoosePhotoFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
     private void getExistingImage(Intent data) {
         Uri _uri = data.getData();
 
@@ -106,7 +107,13 @@ public class ChoosePhotoFragment extends Fragment {
         } else {
             File file = new File(imageFilePath);
             try {
-                Utils.copyFile(file, Utils.IMAGES_FOLDER);
+                Display display = getActivity().getWindowManager().getDefaultDisplay();
+                Point size = new Point();
+                display.getSize(size);
+                Utils.copyAndResizeToScreen(file.getAbsolutePath(),
+                        new File(Utils.IMAGES_FOLDER, file.getName()).getAbsolutePath(),
+                        size.x, size.y);
+
             }
             catch (FileNotFoundException e) {
                 // TODO: better error handling

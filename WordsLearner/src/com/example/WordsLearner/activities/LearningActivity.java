@@ -52,7 +52,8 @@ public class LearningActivity extends Activity {
 
     private void initViewPager(final List<Word> data){
         viewPager = (ViewPager) findViewById(R.id.pager);
-        viewPager.setOffscreenPageLimit(3);
+        // TODO: put inside a constant
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
@@ -71,16 +72,17 @@ public class LearningActivity extends Activity {
         pagerAdapter = new WordsPagerAdapter(getFragmentManager(), data);
         viewPager.setAdapter(pagerAdapter);
 
+        // TODO: needs refactoring - put firstWordId in the beginning of the list
         //select fragment on word which item was clicked
-        if(scrollToClicked) {
-            scrollToClicked = false;
-            for(int i = 0; i < data.size(); i++) {
-                if(data.get(i).getId() == firstWordId) {
-                    viewPager.setCurrentItem(i);
-                    break;
-                }
-            }
-        }
+//        if(scrollToClicked) {
+//            scrollToClicked = false;
+//            for(int i = 0; i < data.size(); i++) {
+//                if(data.get(i).getId() == firstWordId) {
+//                    viewPager.setCurrentItem(i);
+//                    break;
+//                }
+//            }
+//        }
     }
 
     private void startPlaying(String fileName) {
