@@ -55,7 +55,7 @@ public class LearningActivity extends Activity {
 
             @Override
             public void onPageSelected(int i) {
-                startPlaying(data.get(i).getSoundPath());
+                startPlaying(data.get(i));
             }
 
             @Override
@@ -65,9 +65,11 @@ public class LearningActivity extends Activity {
 
         pagerAdapter = new WordsPagerAdapter(getFragmentManager(), data);
         viewPager.setAdapter(pagerAdapter);
+        startPlaying(data.get(0));
     }
 
-    private void startPlaying(String fileName) {
+    private void startPlaying(Word word) {
+        String fileName = word.getSoundPath();
         mPlayer = new MediaPlayer();
         try {
             mPlayer.setDataSource(new File(Utils.SOUNDS_FOLDER, fileName).getAbsolutePath());
