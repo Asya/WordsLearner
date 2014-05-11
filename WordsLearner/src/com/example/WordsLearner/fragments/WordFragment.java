@@ -2,6 +2,7 @@ package com.example.WordsLearner.fragments;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,7 +53,7 @@ public class WordFragment extends Fragment {
 
     public class ShowImageTask extends AsyncTask<Void, Void, Bitmap> {
 
-        private Point screenSize;
+        private int screenLongestEdge;
 
         @Override
         protected void onPreExecute() {
@@ -60,12 +61,13 @@ public class WordFragment extends Fragment {
 
             //get screen size to scale image to screen size
             Display display = getActivity().getWindowManager().getDefaultDisplay();
-            screenSize = new Point();
+            Point screenSize = new Point();
             display.getSize(screenSize);
+            screenLongestEdge = Math.max(screenSize.x, screenSize.y);
         }
 
         protected Bitmap doInBackground(Void... args) {
-            return Utils.decodeSampledBitmapFromFile(new File(Utils.IMAGES_FOLDER, word.getImagePath()), screenSize.x, screenSize.y);
+            return BitmapFactory.decodeFile(new File(Utils.IMAGES_FOLDER, word.getImagePath()).getAbsolutePath());
         }
 
         protected void onPostExecute(Bitmap bitmap) {

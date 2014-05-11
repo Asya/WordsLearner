@@ -178,7 +178,7 @@ public class ChoosePhotoFragment extends Fragment {
             Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
             if(word != null && word.getImagePath() != null) {
                 File imageFile = new File(Utils.IMAGES_FOLDER, word.getImagePath());
-                return Utils.decodeSampledBitmapFromFile(imageFile, 150, 150);
+                return Utils.decodeSampledBitmapFromFile(imageFile, 150);
             }
             return null;
         }
