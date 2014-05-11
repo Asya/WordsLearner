@@ -6,12 +6,10 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +68,10 @@ public class ChoosePhotoFragment extends Fragment {
             }
         });
 
-        new LoadPreviewAsync().execute();
+        Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
+        if(word != null && word.getImagePath() != null) {
+            new LoadPreviewAsync(new File(Utils.IMAGES_FOLDER, word.getImagePath())).execute();
+        }
 
         return rootView;
     }
@@ -79,9 +80,11 @@ public class ChoosePhotoFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ChoosePhotoFragment.PICK_IMAGE && data != null && data.getData() != null) {
             getExistingImage(data);
-            new LoadPreviewAsync().execute();
+            File imageFile = new File(((CreateWordActivity)getActivity()).getImageTempFilePath());
+            new LoadPreviewAsync(imageFile).execute();
         } else if (requestCode == ChoosePhotoFragment.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            new LoadPreviewAsync().execute();
+            File imageFile = new File(((CreateWordActivity)getActivity()).getImageTempFilePath());
+            new LoadPreviewAsync(imageFile).execute();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -105,25 +108,7 @@ public class ChoosePhotoFragment extends Fragment {
             AlertDialog dialog = builder.create();
             dialog.show();
         } else {
-            File file = new File(imageFilePath);
-            try {
-                Display display = getActivity().getWindowManager().getDefaultDisplay();
-                Point size = new Point();
-                display.getSize(size);
-                Utils.copyAndResizeToScreen(file.getAbsolutePath(),
-                        new File(Utils.IMAGES_FOLDER, file.getName()).getAbsolutePath(),
-                        size.x, size.y);
-
-            }
-            catch (FileNotFoundException e) {
-                // TODO: better error handling
-                e.printStackTrace();
-            }
-            catch (IOException e) {
-                // TODO: better error handling
-                e.printStackTrace();
-            }
-            ((CreateWordActivity)getActivity()).setCurrentPhotoName(file.getName());
+            ((CreateWordActivity)getActivity()).setImageTempFilePath(imageFilePath);
         }
     }
 
@@ -131,42 +116,28 @@ public class ChoosePhotoFragment extends Fragment {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
+            File tempPhotoFile = null;
             try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+                tempPhotoFile = Utils.getCameraTempFile();
+                ((CreateWordActivity)getActivity()).setImageTempFilePath(tempPhotoFile.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
+            if (tempPhotoFile != null) {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
+                        Uri.fromFile(tempPhotoFile));
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
     }
 
-    private File createImageFile() throws IOException {
-        File storageDir = new File(Utils.IMAGES_FOLDER);
-        if (!storageDir.exists()) {
-            storageDir.mkdirs();
-            storageDir.createNewFile();
-        }
-
-        File image = File.createTempFile(
-                "IMG_",  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        if(getActivity() != null) {
-            ((CreateWordActivity)getActivity()).setCurrentPhotoName(image.getName());
-        }
-        return image;
-    }
-
     class LoadPreviewAsync extends AsyncTask<Void, Void, Bitmap> {
+
+        private File imageFile;
+
+        private LoadPreviewAsync(File imageFile) {
+            this.imageFile = imageFile;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -175,23 +146,15 @@ public class ChoosePhotoFragment extends Fragment {
         }
 
         protected Bitmap doInBackground(Void... args) {
-            Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
-            if(word != null && word.getImagePath() != null) {
-                File imageFile = new File(Utils.IMAGES_FOLDER, word.getImagePath());
-                return Utils.decodeSampledBitmapFromFile(imageFile, 150);
-            }
-            return null;
+            return Utils.decodeSampledBitmapFromFile(imageFile, 150);
         }
 
         protected void onPostExecute(Bitmap result) {
             imagePreview.setImageBitmap(result);
             progressBar.setVisibility(View.GONE);
 
-            //when image chose enable next button
-            Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
-            if(word != null && word.getImagePath() != null) {
-                btnNext.setEnabled(true);
-            }
+            //when image is chosen enable next button
+            btnNext.setEnabled(true);
         }
     }
 

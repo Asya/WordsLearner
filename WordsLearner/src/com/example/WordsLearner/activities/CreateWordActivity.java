@@ -15,21 +15,16 @@ public class CreateWordActivity extends Activity {
     public final static int MODE_EDIT = 1;
 
     private int mode = MODE_CREATE;
+
     private Word currentWord;
+    private String imageTempFilePath;
+    private String soundTempFilePath;
 
     private OneSideViewPager viewPager;
     private CirclePageIndicator circlePageIndicator;
 
     public Word getCurrentWord() {
         return currentWord;
-    }
-
-    public void setCurrentPhotoName(String currentPhotoName) {
-        if(currentWord == null) {
-            currentWord = new Word();
-        }
-        this.currentWord.setImagePath(currentPhotoName);
-        this.currentWord.setSoundPath(changeExtention(currentPhotoName));
     }
 
     public int getMode() {
@@ -69,9 +64,19 @@ public class CreateWordActivity extends Activity {
         viewPager.setCurrentItem(position);
     }
 
-    private String changeExtention(String name) {
-        String filenameArray[] = name.split("\\.");
-        String extension = filenameArray[filenameArray.length-1];
-        return name.replace("." + extension, ".mp3");
+    public String getImageTempFilePath() {
+        return imageTempFilePath;
+    }
+
+    public void setImageTempFilePath(String imageTempFilePath) {
+        this.imageTempFilePath = imageTempFilePath;
+    }
+
+    public String getSoundTempFilePath() {
+        return soundTempFilePath;
+    }
+
+    public void setSoundTempFilePath(String soundTempFilePath) {
+        this.soundTempFilePath = soundTempFilePath;
     }
 }

@@ -70,7 +70,7 @@ public class LearningActivity extends Activity {
     private void startPlaying(String fileName) {
         mPlayer = new MediaPlayer();
         try {
-            mPlayer.setDataSource(Utils.SOUNDS_FOLDER + File.separator + fileName);
+            mPlayer.setDataSource(new File(Utils.SOUNDS_FOLDER, fileName).getAbsolutePath());
             mPlayer.prepare();
             mPlayer.start();
         } catch (IOException e) {

@@ -64,24 +64,34 @@ public class RecordSoundFragment extends Fragment {
             }
         });
 
-        setNextListenButtonsEnabled();
+        Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
+        if(word != null && word.getSoundPath() != null) {
+            setNextListenButtonsEnabled();
+        }
         return rootView;
     }
 
     private void startRecording() {
         Utils.checkDirectory(Utils.SOUNDS_FOLDER);
-        String soundName = ((CreateWordActivity)getActivity()).getCurrentWord().getSoundPath();
+        String soundName = null;
+        try {
+            soundName = Utils.getSoundTempFile().getAbsolutePath();
+            ((CreateWordActivity)getActivity()).setSoundTempFilePath(soundName);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
 
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mRecorder.setOutputFile(Utils.SOUNDS_FOLDER + File.separator + soundName);
+        mRecorder.setOutputFile(soundName);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         try {
             mRecorder.prepare();
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
+            e.printStackTrace();
         }
 
         mRecorder.start();
@@ -95,19 +105,16 @@ public class RecordSoundFragment extends Fragment {
     }
 
     private void setNextListenButtonsEnabled() {
-        Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
-        if(word != null && word.getSoundPath() != null) {
             nextBtn.setEnabled(true);
             listenBtn.setEnabled(true);
-        }
     }
 
     private void startPlaying() {
-        String soundName = ((CreateWordActivity)getActivity()).getCurrentWord().getSoundPath();
+        String soundName = ((CreateWordActivity)getActivity()).getSoundTempFilePath();
 
         mPlayer = new MediaPlayer();
         try {
-            mPlayer.setDataSource(Utils.SOUNDS_FOLDER + File.separator + soundName);
+            mPlayer.setDataSource(soundName);
             mPlayer.prepare();
             mPlayer.start();
         } catch (IOException e) {
