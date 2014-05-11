@@ -25,8 +25,6 @@ public class LearningActivity extends Activity {
 
     private final static String LOG_TAG = "LearnWords";
 
-    public final static String SCROLL_TO_CLICKED = "scroll_to_clicked";
-
     private ViewPager viewPager;
     private WordsPagerAdapter pagerAdapter;
     private ProgressDialog progressDialog;
@@ -34,7 +32,6 @@ public class LearningActivity extends Activity {
     private MediaPlayer mPlayer = null;
 
     private int firstWordId;
-    private boolean scrollToClicked = true;
     private boolean doubleBackToExitPressedOnce;
 
     @Override
@@ -43,9 +40,6 @@ public class LearningActivity extends Activity {
         setContentView(R.layout.activity_learning);
 
         firstWordId = getIntent().getIntExtra(Word.WORD_ID_EXTRA, -1);
-        if (savedInstanceState != null) {
-            scrollToClicked = savedInstanceState.getBoolean(SCROLL_TO_CLICKED);
-        }
 
         new LisWordsTask().execute();
     }
@@ -71,18 +65,6 @@ public class LearningActivity extends Activity {
 
         pagerAdapter = new WordsPagerAdapter(getFragmentManager(), data);
         viewPager.setAdapter(pagerAdapter);
-
-        // TODO: needs refactoring - put firstWordId in the beginning of the list
-        //select fragment on word which item was clicked
-//        if(scrollToClicked) {
-//            scrollToClicked = false;
-//            for(int i = 0; i < data.size(); i++) {
-//                if(data.get(i).getId() == firstWordId) {
-//                    viewPager.setCurrentItem(i);
-//                    break;
-//                }
-//            }
-//        }
     }
 
     private void startPlaying(String fileName) {
@@ -94,40 +76,6 @@ public class LearningActivity extends Activity {
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
-    }
-
-
-    public class LisWordsTask extends AsyncTask<Void, Void, List<Word>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(LearningActivity.this);
-            progressDialog.setMessage(getString(R.string.loading));
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
-        protected List<Word> doInBackground(Void... args) {
-            WordsLearnerDataHelper db = new WordsLearnerDataHelper(LearningActivity.this);
-            List<Word> result =  db.getAllWords();
-            Collections.shuffle(result, new Random());
-            return result;
-        }
-
-        protected void onPostExecute(List<Word> result) {
-            initViewPager(result);
-            if (progressDialog != null) {
-                progressDialog.dismiss();
-                progressDialog = null;
-            }
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(SCROLL_TO_CLICKED, false);
     }
 
     @Override
@@ -166,5 +114,42 @@ public class LearningActivity extends Activity {
                 doubleBackToExitPressedOnce=false;
             }
         }, 3000);
+    }
+
+    public class LisWordsTask extends AsyncTask<Void, Void, List<Word>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(LearningActivity.this);
+            progressDialog.setMessage(getString(R.string.loading));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        protected List<Word> doInBackground(Void... args) {
+            WordsLearnerDataHelper db = new WordsLearnerDataHelper(LearningActivity.this);
+            List<Word> result =  db.getAllWords();
+            Collections.shuffle(result, new Random());
+
+            //put selected word in the beginning of the list
+            for(int i = 0; i < result.size(); i++) {
+                if(result.get(i).getId() == firstWordId) {
+                    Word temp = result.get(i);
+                    result.set(i, result.get(0));
+                    result.set(0, temp);
+                    break;
+                }
+            }
+            return result;
+        }
+
+        protected void onPostExecute(List<Word> result) {
+            initViewPager(result);
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }
     }
 }
