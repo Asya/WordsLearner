@@ -3,7 +3,6 @@ package com.example.WordsLearner.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -20,12 +19,10 @@ import android.widget.ProgressBar;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.activities.CreateWordActivity;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
-import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.model.Word;
 import com.example.WordsLearner.utils.Utils;
 
 import java.io.*;
-import java.util.List;
 
 public class ChoosePhotoFragment extends Fragment {
 
@@ -108,39 +105,19 @@ public class ChoosePhotoFragment extends Fragment {
             dialog.show();
         } else {
             File file = new File(imageFilePath);
-            copyFile(file.getParent(), file.getName(), Utils.IMAGES_FOLDER);
+            try {
+                Utils.copyFile(file, Utils.IMAGES_FOLDER);
+            }
+            catch (FileNotFoundException e) {
+                // TODO: better error handling
+                e.printStackTrace();
+            }
+            catch (IOException e) {
+                // TODO: better error handling
+                e.printStackTrace();
+            }
             ((CreateWordActivity)getActivity()).setCurrentPhotoName(file.getName());
         }
-    }
-
-    private void copyFile(String inputPath, String inputFile, String outputPath) {
-        InputStream in;
-        OutputStream out;
-        try {
-            Utils.checkDirectory(Utils.IMAGES_FOLDER);
-
-            in = new FileInputStream(inputPath + File.separator + inputFile);
-            out = new FileOutputStream(outputPath + File.separator + inputFile);
-
-            byte[] buffer = new byte[1024];
-            int read;
-            while ((read = in.read(buffer)) != -1) {
-                out.write(buffer, 0, read);
-            }
-            in.close();
-
-            // write the output file
-            out.flush();
-            out.close();
-        }
-
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     private void dispatchTakePictureIntent() {

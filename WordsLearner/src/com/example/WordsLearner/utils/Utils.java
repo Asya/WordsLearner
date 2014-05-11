@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 
-import java.io.File;
+import java.io.*;
 
 public class Utils {
 
@@ -56,5 +56,28 @@ public class Utils {
         {
             dir.mkdirs();
         }
+    }
+
+    public static void copyFile(File file, String outputPath) throws IOException{
+        InputStream in;
+        OutputStream out;
+
+        String inputFile = file.getName();
+
+        Utils.checkDirectory(Utils.IMAGES_FOLDER);
+
+        in = new FileInputStream(file.getPath());
+        out = new FileOutputStream(new File(outputPath, inputFile).getPath());
+
+        byte[] buffer = new byte[1024];
+        int read;
+        while ((read = in.read(buffer)) != -1) {
+            out.write(buffer, 0, read);
+        }
+        in.close();
+
+        // write the output file
+        out.flush();
+        out.close();
     }
 }
