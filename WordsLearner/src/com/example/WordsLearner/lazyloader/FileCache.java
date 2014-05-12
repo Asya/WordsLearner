@@ -21,7 +21,6 @@ public class FileCache {
     public File getFile(String filename){
         File f = new File(cacheDir, filename);
         return f;
-        
     }
     
     public void clear(){

@@ -20,7 +20,6 @@ import com.example.WordsLearner.utils.Utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 public class SetNameFragment extends Fragment {
@@ -44,6 +43,17 @@ public class SetNameFragment extends Fragment {
         });
         return rootView;
     }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
+        if(word != null && word.getName() != null) {
+            nameEdit.setText(word.getName());
+        }
+    }
+
+    /**************************************************/
 
     private String moveSoundFile() {
         String resultFileName = UUID.randomUUID().toString() + Utils.SOUND_EXTENTION;
@@ -120,14 +130,7 @@ public class SetNameFragment extends Fragment {
         db.addWord(word);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
-        if(word != null && word.getName() != null) {
-            nameEdit.setText(word.getName());
-        }
-    }
+    /**************************************************/
 
     private class SaveTask extends AsyncTask<Void, Void, Void> {
 

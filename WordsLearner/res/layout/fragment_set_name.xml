@@ -9,21 +9,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center">
-
         <EditText
+                android:id="@+id/edit_name"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/edit_name"
                 android:hint="@string/name"/>
-
         <Button
-                android:text="@string/save"
+                android:id="@+id/btn_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_save"
+                android:text="@string/save"
                 android:textColor="@android:color/black"
                 android:singleLine="true"/>
-
     </LinearLayout>
 
 </FrameLayout>

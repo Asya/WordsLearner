@@ -16,7 +16,7 @@ public class PreferencesManager {
         preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
     }
 
-    /*************************************************************/
+    /**************************************************/
 
     public long getDbTimestamp() {
         return getLong(KEY_DB_TIMESTAMP, 0);
@@ -26,7 +26,7 @@ public class PreferencesManager {
         setLong(KEY_DB_TIMESTAMP, dbTimestemp);
     }
 
-    /*************************************************************/
+    /**************************************************/
 
     private String getString(String key, String defaultValue) {
 		return preferences.getString(key, defaultValue);

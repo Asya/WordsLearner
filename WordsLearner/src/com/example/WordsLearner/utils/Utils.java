@@ -18,9 +18,6 @@ public class Utils {
     public static final String IMAGES_TEMP_FILE_NAME = "TempCameraImage";
     public static final String SOUND_TEMP_FILE_NAME = "TempSound";
 
-
-
-
     public static Bitmap decodeSampledBitmapFromFile(File file, int targetLongestEdge) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -126,6 +123,8 @@ public class Utils {
         soundFile = File.createTempFile(SOUND_TEMP_FILE_NAME, SOUND_EXTENTION, new File(SOUNDS_FOLDER));
         return soundFile;
     }
+
+    /**************************************************/
 
     public static class ScaleInformation {
         public final int bitmapSampleSize;

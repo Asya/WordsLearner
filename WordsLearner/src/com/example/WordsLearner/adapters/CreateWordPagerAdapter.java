@@ -3,14 +3,9 @@ package com.example.WordsLearner.adapters;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v13.app.FragmentStatePagerAdapter;
 import com.example.WordsLearner.fragments.ChoosePhotoFragment;
 import com.example.WordsLearner.fragments.RecordSoundFragment;
 import com.example.WordsLearner.fragments.SetNameFragment;
-import com.example.WordsLearner.fragments.WordFragment;
-import com.example.WordsLearner.model.Word;
-
-import java.util.List;
 
 public class CreateWordPagerAdapter extends FragmentPagerAdapter {
 

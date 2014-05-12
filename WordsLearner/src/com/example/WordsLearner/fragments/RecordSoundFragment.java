@@ -16,7 +16,6 @@ import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
 import com.example.WordsLearner.model.Word;
 import com.example.WordsLearner.utils.Utils;
 
-import java.io.File;
 import java.io.IOException;
 
 public class RecordSoundFragment extends Fragment {
@@ -71,6 +70,22 @@ public class RecordSoundFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mRecorder != null) {
+            mRecorder.release();
+            mRecorder = null;
+        }
+
+        if (mPlayer != null) {
+            mPlayer.release();
+            mPlayer = null;
+        }
+    }
+
+    /**************************************************/
+
     private void startRecording() {
         Utils.checkDirectory(Utils.SOUNDS_FOLDER);
         String soundName = null;
@@ -119,20 +134,6 @@ public class RecordSoundFragment extends Fragment {
             mPlayer.start();
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mRecorder != null) {
-            mRecorder.release();
-            mRecorder = null;
-        }
-
-        if (mPlayer != null) {
-            mPlayer.release();
-            mPlayer = null;
         }
     }
 }

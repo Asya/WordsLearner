@@ -37,6 +37,14 @@ public class WordFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(Word.WORD_EXTRA, word);
+    }
+
+    /**************************************************/
+
     public void setWord(Word word) {
         this.word = word;
     }
@@ -45,11 +53,7 @@ public class WordFragment extends Fragment {
         return word;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(Word.WORD_EXTRA, word);
-    }
+    /**************************************************/
 
     public class ShowImageTask extends AsyncTask<Void, Void, Bitmap> {
 

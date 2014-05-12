@@ -25,6 +25,10 @@ public class LearningActivity extends Activity {
 
     private final static String LOG_TAG = "LearnWords";
 
+    private final static int PAGER_CACHE_PAGE_COUNT = 2;
+    private final static int BACK_PRESS_TIMEOUT = 3000;
+
+
     private ViewPager viewPager;
     private WordsPagerAdapter pagerAdapter;
     private ProgressDialog progressDialog;
@@ -40,49 +44,13 @@ public class LearningActivity extends Activity {
         setContentView(R.layout.activity_learning);
 
         firstWordId = getIntent().getIntExtra(Word.WORD_ID_EXTRA, -1);
-
         new LisWordsTask().execute();
-    }
-
-    private void initViewPager(final List<Word> data){
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        // TODO: put inside a constant
-        viewPager.setOffscreenPageLimit(2);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i2) {
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                startPlaying(data.get(i));
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-
-        pagerAdapter = new WordsPagerAdapter(getFragmentManager(), data);
-        viewPager.setAdapter(pagerAdapter);
-        startPlaying(data.get(0));
-    }
-
-    private void startPlaying(Word word) {
-        String fileName = word.getSoundPath();
-        mPlayer = new MediaPlayer();
-        try {
-            mPlayer.setDataSource(new File(Utils.SOUNDS_FOLDER, fileName).getAbsolutePath());
-            mPlayer.prepare();
-            mPlayer.start();
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "prepare() failed");
-        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         if (progressDialog != null) {
             progressDialog.dismiss();
             progressDialog = null;
@@ -115,8 +83,48 @@ public class LearningActivity extends Activity {
             public void run() {
                 doubleBackToExitPressedOnce=false;
             }
-        }, 3000);
+        }, BACK_PRESS_TIMEOUT);
     }
+
+    /**************************************************/
+
+    private void initViewPager(final List<Word> data){
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setOffscreenPageLimit(PAGER_CACHE_PAGE_COUNT);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                startPlaying(data.get(i));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        pagerAdapter = new WordsPagerAdapter(getFragmentManager(), data);
+        viewPager.setAdapter(pagerAdapter);
+        startPlaying(data.get(0));  // play sound for first item when pager was just created
+    }
+
+    private void startPlaying(Word word) {
+        String fileName = word.getSoundPath();
+        mPlayer = new MediaPlayer();
+        try {
+            mPlayer.setDataSource(new File(Utils.SOUNDS_FOLDER, fileName).getAbsolutePath());
+            mPlayer.prepare();
+            mPlayer.start();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
+            e.printStackTrace();
+        }
+    }
+
+    /**************************************************/
 
     public class LisWordsTask extends AsyncTask<Void, Void, List<Word>> {
 

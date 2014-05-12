@@ -6,16 +6,12 @@ import java.io.Serializable;
 public class Word implements Serializable{
 
     public final static String WORD_ID_EXTRA = "word_id";
-    public final static String WORD_PHOTO_EXTRA = "word_photo";
     public final static String WORD_EXTRA = "word";
 
     private int id;
     private String imagePath;
     private String name;
     private String soundPath;
-
-    public Word() {
-    }
 
     public Word(int id, String imagePath, String soundPath, String name) {
         this.id = id;

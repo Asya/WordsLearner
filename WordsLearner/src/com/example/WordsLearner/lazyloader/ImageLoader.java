@@ -18,11 +18,11 @@ import com.example.WordsLearner.R;
 
 public class ImageLoader {
     
-    MemoryCache memoryCache=new MemoryCache();
-    FileCache fileCache;
+    private MemoryCache memoryCache=new MemoryCache();
+    private FileCache fileCache;
     private Map<ImageView, String> imageViews=Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
-    ExecutorService executorService;
-    Handler handler=new Handler();//handler to display images in UI thread
+    private ExecutorService executorService;
+    private Handler handler=new Handler();//handler to display images in UI thread
     
     public ImageLoader(Context context){
         fileCache=new FileCache(context);
@@ -109,7 +109,7 @@ public class ImageLoader {
         }
     }
     
-    class PhotosLoader implements Runnable {
+    private class PhotosLoader implements Runnable {
         PhotoToLoad photoToLoad;
         PhotosLoader(PhotoToLoad photoToLoad){
             this.photoToLoad=photoToLoad;

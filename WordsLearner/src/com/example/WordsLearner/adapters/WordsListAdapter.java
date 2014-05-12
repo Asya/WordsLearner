@@ -20,10 +20,12 @@ import java.util.List;
 
 public class WordsListAdapter extends BaseAdapter {
 
-    private List<Word> data;
     private Context context;
+
+    private List<Word> data;
+    private ImageLoader imageLoader;
+
     private WordsListActivity.CloseListMenuListener closeListMenuListener;
-    public ImageLoader imageLoader;
 
     public WordsListAdapter(Context context, List<Word> data, WordsListActivity.CloseListMenuListener closeListMenuListener) {
         this.context = context;
@@ -98,6 +100,8 @@ public class WordsListAdapter extends BaseAdapter {
         return convertView;
     }
 
+    /**************************************************/
+
     private void deleteWord(int position, Word word) {
         data.remove(position);
         notifyDataSetChanged();
@@ -118,11 +122,12 @@ public class WordsListAdapter extends BaseAdapter {
         }
     }
 
-    static class ViewHolder {
+    /**************************************************/
+
+    private static class ViewHolder {
         ImageView ivImage;
         TextView tvTitle;
         Button btnEdit;
         Button btnDelete;
     }
-
 }

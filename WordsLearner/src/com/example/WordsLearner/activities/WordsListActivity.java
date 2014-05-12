@@ -21,12 +21,12 @@ import java.util.List;
 public class WordsListActivity extends Activity {
 
     private WordsListAdapter adapter;
-    private List<Word> words;
-
     private SwipeListView swipeListView;
     private ProgressDialog progressDialog;
 
     private PreferencesManager prefs;
+
+    private List<Word> words;
     private long dbTimestamp = -1;
 
     @Override
@@ -34,8 +34,8 @@ public class WordsListActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_words_list);
-        prefs = new PreferencesManager(this);
 
+        prefs = new PreferencesManager(this);
         words = new ArrayList<Word>();
         adapter = new WordsListAdapter(this, words, new CloseListMenuListener());
 
@@ -83,7 +83,6 @@ public class WordsListActivity extends Activity {
                 }
                 adapter.notifyDataSetChanged();
             }
-
         });
 
         Button addItemBtn = (Button) findViewById(R.id.add_item_btn);
@@ -109,6 +108,23 @@ public class WordsListActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+    }
+
+    /**************************************************/
+
+    public class CloseListMenuListener {
+        public void closeMenu() {
+            swipeListView.closeOpenedItems();
+        }
+    }
+
     public class LisWordsTask extends AsyncTask<Void, Void, List<Word>> {
 
         @Override
@@ -131,25 +147,11 @@ public class WordsListActivity extends Activity {
             words.clear();
             words.addAll(result);
             adapter.notifyDataSetChanged();
+
             if (progressDialog != null) {
                 progressDialog.dismiss();
                 progressDialog = null;
             }
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(progressDialog != null) {
-            progressDialog.dismiss();
-            progressDialog = null;
-        }
-    }
-
-    public class CloseListMenuListener {
-        public void closeMenu() {
-            swipeListView.closeOpenedItems();
         }
     }
 }

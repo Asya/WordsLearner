@@ -79,7 +79,7 @@ public class ChoosePhotoFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ChoosePhotoFragment.PICK_IMAGE && data != null && data.getData() != null) {
-            getExistingImage(data);
+            saveExistingImagePath(data);
             File imageFile = new File(((CreateWordActivity)getActivity()).getImageTempFilePath());
             new LoadPreviewAsync(imageFile).execute();
         } else if (requestCode == ChoosePhotoFragment.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
@@ -90,7 +90,9 @@ public class ChoosePhotoFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void getExistingImage(Intent data) {
+    /**************************************************/
+
+    private void saveExistingImagePath(Intent data) {
         Uri _uri = data.getData();
 
         //User had pick an image.
@@ -130,6 +132,8 @@ public class ChoosePhotoFragment extends Fragment {
             }
         }
     }
+
+    /**************************************************/
 
     class LoadPreviewAsync extends AsyncTask<Void, Void, Bitmap> {
 

@@ -50,9 +50,9 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
-    public void addWord(Word word){
-        Log.d(LOG_TAG + "addWord", word.toString());
+    /**************************************************/
 
+    public void addWord(Word word){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -61,17 +61,16 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
         values.put(KEY_NAME, word.getName());
 
         db.insert(TABLE_WORDS, null, values);
-
         db.close();
 
+        Log.d(LOG_TAG + "addWord", word.toString());
         setTimestamp();
     }
 
     public List<Word> getAllWords() {
         List<Word> words = new LinkedList<Word>();
-        String query = "SELECT  * FROM " + TABLE_WORDS;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_WORDS, WORDS_COLUMNS, null, null, null, null, null);;
 
         if (cursor.moveToFirst()) {
             do {
@@ -85,8 +84,8 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        db.close();
         Log.d(LOG_TAG + "getAllWords", words.toString());
-
         return words;
     }
 
@@ -98,7 +97,7 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
         values.put(KEY_SOUND_PATH, word.getSoundPath());
         values.put(KEY_NAME, word.getName());
 
-        int i = db.update(TABLE_WORDS, values, KEY_ID+" = ?", new String[] { String.valueOf(word.getId()) });
+        int i = db.update(TABLE_WORDS, values, KEY_ID + "=?", new String[] { String.valueOf(word.getId()) });
         db.close();
 
         Log.d(LOG_TAG + "updatedWord", word.toString());
@@ -108,12 +107,14 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
 
     public void deleteWord(Word word) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_WORDS, KEY_ID+" = ?", new String[] { String.valueOf(word.getId()) });
+        db.delete(TABLE_WORDS, KEY_ID + "=?", new String[] { String.valueOf(word.getId()) });
         db.close();
 
         Log.d(LOG_TAG + "deleteWord", word.toString());
         setTimestamp();
     }
+
+    /**************************************************/
 
     private void setTimestamp() {
         (new PreferencesManager(context)).setDbTimestamp(System.currentTimeMillis());

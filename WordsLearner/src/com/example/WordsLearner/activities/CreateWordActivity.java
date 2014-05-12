@@ -23,14 +23,6 @@ public class CreateWordActivity extends Activity {
     private OneSideViewPager viewPager;
     private CirclePageIndicator circlePageIndicator;
 
-    public Word getCurrentWord() {
-        return currentWord;
-    }
-
-    public int getMode() {
-        return mode;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +52,8 @@ public class CreateWordActivity extends Activity {
         }
     }
 
+    /**************************************************/
+
     public void goToNextStep(int position) {
         viewPager.setCurrentItem(position);
     }
@@ -78,5 +72,13 @@ public class CreateWordActivity extends Activity {
 
     public void setSoundTempFilePath(String soundTempFilePath) {
         this.soundTempFilePath = soundTempFilePath;
+    }
+
+    public Word getCurrentWord() {
+        return currentWord;
+    }
+
+    public int getMode() {
+        return mode;
     }
 }
