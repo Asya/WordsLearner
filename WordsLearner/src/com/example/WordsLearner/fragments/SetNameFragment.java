@@ -1,7 +1,9 @@
 package com.example.WordsLearner.fragments;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -18,11 +20,13 @@ import com.example.WordsLearner.utils.Utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 public class SetNameFragment extends Fragment {
 
     private EditText nameEdit;
+    private ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,20 +39,7 @@ public class SetNameFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String imageFileName = moveImageFile();
-                String soundFileName = moveSoundFile();
-
-                switch (((CreateWordActivity)getActivity()).getMode()) {
-                    case CreateWordActivity.MODE_CREATE:
-                        addWordToDB(imageFileName, soundFileName, nameEdit.getText().toString());
-                        break;
-                    case CreateWordActivity.MODE_EDIT:
-                        updateWordInDB(imageFileName, soundFileName, nameEdit.getText().toString());
-                        break;
-                }
-
-
-                getActivity().finish();
+                new SaveTask().execute();
             }
         });
         return rootView;
@@ -135,6 +126,53 @@ public class SetNameFragment extends Fragment {
         Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
         if(word != null && word.getName() != null) {
             nameEdit.setText(word.getName());
+        }
+    }
+
+    private class SaveTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage(getString(R.string.loading));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... args) {
+            String imageFileName = moveImageFile();
+            String soundFileName = moveSoundFile();
+
+            switch (((CreateWordActivity)getActivity()).getMode()) {
+                case CreateWordActivity.MODE_CREATE:
+                    addWordToDB(imageFileName, soundFileName, nameEdit.getText().toString());
+                    break;
+                case CreateWordActivity.MODE_EDIT:
+                    updateWordInDB(imageFileName, soundFileName, nameEdit.getText().toString());
+                    break;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+            getActivity().finish();
+        }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
         }
     }
 }
