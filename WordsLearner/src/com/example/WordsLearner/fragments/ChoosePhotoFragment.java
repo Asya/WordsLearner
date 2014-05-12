@@ -95,11 +95,12 @@ public class ChoosePhotoFragment extends Fragment {
     private void saveExistingImagePath(Intent data) {
         Uri _uri = data.getData();
 
-        //User had pick an image.
-        Cursor cursor = getActivity().getContentResolver().query(_uri, new String[]{android.provider.MediaStore.Images.ImageColumns.DATA}, null, null, null);
+        // User had pick an image.
+        Cursor cursor = getActivity().getContentResolver().query(_uri,
+                new String[]{android.provider.MediaStore.Images.ImageColumns.DATA}, null, null, null);
         cursor.moveToFirst();
 
-        //Link to the image
+        // Link to the image
         final String imageFilePath = cursor.getString(0);
         cursor.close();
 
@@ -123,7 +124,7 @@ public class ChoosePhotoFragment extends Fragment {
                 tempPhotoFile = Utils.getCameraTempFile();
                 ((CreateWordActivity)getActivity()).setImageTempFilePath(tempPhotoFile.getAbsolutePath());
             } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
             if (tempPhotoFile != null) {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,

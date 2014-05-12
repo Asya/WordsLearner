@@ -8,11 +8,11 @@ import com.example.WordsLearner.model.Word;
 
 import java.util.List;
 
-public class WordsPagerAdapter extends FragmentStatePagerAdapter {
+public class LearningPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Word> data;
 
-    public WordsPagerAdapter(FragmentManager fm, List<Word> data) {
+    public LearningPagerAdapter(FragmentManager fm, List<Word> data) {
         super(fm);
         this.data = data;
     }

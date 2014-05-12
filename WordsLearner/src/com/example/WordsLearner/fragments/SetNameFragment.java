@@ -5,10 +5,9 @@ import android.app.ProgressDialog;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Display;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
 import com.example.WordsLearner.R;
@@ -24,16 +23,33 @@ import java.util.UUID;
 
 public class SetNameFragment extends Fragment {
 
+    // TODO: this fragment is responsible for setting name, moving image/audio files and creating/updating Words in db. I am going to refactor that soon.
+
     private EditText nameEdit;
+    private Button saveBtn;
     private ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_set_name, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_set_name, container, false);
 
         nameEdit = (EditText)rootView.findViewById(R.id.edit_name);
-        Button saveBtn = (Button)rootView.findViewById(R.id.btn_save);
+        saveBtn = (Button)rootView.findViewById(R.id.btn_save);
+        nameEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                saveBtn.setEnabled(!"".equals(s.toString()));
+            }
+        });
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,22 +66,22 @@ public class SetNameFragment extends Fragment {
         Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
         if(word != null && word.getName() != null) {
             nameEdit.setText(word.getName());
+            saveBtn.setEnabled(!"".equals(word.getName()));
         }
     }
 
     /**************************************************/
 
     private String moveSoundFile() {
-        String resultFileName = UUID.randomUUID().toString() + Utils.SOUND_EXTENTION;
         String soundTempFilePath = ((CreateWordActivity)getActivity()).getSoundTempFilePath();
         if(soundTempFilePath == null) {
             return null;
         }
 
+        String resultFileName = UUID.randomUUID().toString() + Utils.SOUND_EXTENTION;
         File tempFile = new File(soundTempFilePath);
         try {
             Utils.copyFile(tempFile.getAbsolutePath(), Utils.SOUNDS_FOLDER, resultFileName);
-
             tempFile.delete();
             return resultFileName;
         } catch (FileNotFoundException e) {
@@ -80,12 +96,12 @@ public class SetNameFragment extends Fragment {
     }
 
     private String moveImageFile() {
-        String resultFileName = UUID.randomUUID().toString() + Utils.IMAGE_EXTENTION;
         String imageTempFilePath = ((CreateWordActivity)getActivity()).getImageTempFilePath();
         if(imageTempFilePath == null) {
             return null;
         }
 
+        String resultFileName = UUID.randomUUID().toString() + Utils.IMAGE_EXTENTION;
         File file = new File(imageTempFilePath);
         try {
             Display display = getActivity().getWindowManager().getDefaultDisplay();
@@ -167,7 +183,6 @@ public class SetNameFragment extends Fragment {
             }
             getActivity().finish();
         }
-
     }
 
     @Override

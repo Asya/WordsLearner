@@ -10,7 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.Toast;
 import com.example.WordsLearner.R;
-import com.example.WordsLearner.adapters.WordsPagerAdapter;
+import com.example.WordsLearner.adapters.LearningPagerAdapter;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.model.Word;
 import com.example.WordsLearner.utils.Utils;
@@ -28,9 +28,8 @@ public class LearningActivity extends Activity {
     private final static int PAGER_CACHE_PAGE_COUNT = 2;
     private final static int BACK_PRESS_TIMEOUT = 3000;
 
-
     private ViewPager viewPager;
-    private WordsPagerAdapter pagerAdapter;
+    private LearningPagerAdapter pagerAdapter;
     private ProgressDialog progressDialog;
 
     private MediaPlayer mPlayer = null;
@@ -106,7 +105,7 @@ public class LearningActivity extends Activity {
             }
         });
 
-        pagerAdapter = new WordsPagerAdapter(getFragmentManager(), data);
+        pagerAdapter = new LearningPagerAdapter(getFragmentManager(), data);
         viewPager.setAdapter(pagerAdapter);
         startPlaying(data.get(0));  // play sound for first item when pager was just created
     }
@@ -119,7 +118,7 @@ public class LearningActivity extends Activity {
             mPlayer.prepare();
             mPlayer.start();
         } catch (IOException e) {
-            Log.e(LOG_TAG, "prepare() failed");
+            Log.e(LOG_TAG, "playback failed");
             e.printStackTrace();
         }
     }

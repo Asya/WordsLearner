@@ -54,10 +54,6 @@ public class CreateWordActivity extends Activity {
 
     /**************************************************/
 
-    public void goToNextStep(int position) {
-        viewPager.setCurrentItem(position);
-    }
-
     public String getImageTempFilePath() {
         return imageTempFilePath;
     }
@@ -80,5 +76,11 @@ public class CreateWordActivity extends Activity {
 
     public int getMode() {
         return mode;
+    }
+
+    /**************************************************/
+
+    public void goToNextStep(int position) {
+        viewPager.setCurrentItem(position);
     }
 }

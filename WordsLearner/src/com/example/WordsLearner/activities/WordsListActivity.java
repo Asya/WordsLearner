@@ -37,43 +37,15 @@ public class WordsListActivity extends Activity {
 
         prefs = new PreferencesManager(this);
         words = new ArrayList<Word>();
-        adapter = new WordsListAdapter(this, words, new CloseListMenuListener());
+        adapter = new WordsListAdapter(this, words);
 
         swipeListView = (SwipeListView) findViewById(R.id.example_lv_list);
         swipeListView.setSwipeListViewListener(new BaseSwipeListViewListener() {
-            @Override
-            public void onOpened(int position, boolean toRight) {
-            }
-
-            @Override
-            public void onClosed(int position, boolean fromRight) {
-            }
-
-            @Override
-            public void onListChanged() {
-            }
-
-            @Override
-            public void onMove(int position, float x) {
-            }
-
-            @Override
-            public void onStartOpen(int position, int action, boolean right) {
-            }
-
-            @Override
-            public void onStartClose(int position, boolean right) {
-            }
-
             @Override
             public void onClickFrontView(int position) {
                 Intent intent = new Intent(WordsListActivity.this, LearningActivity.class);
                 intent.putExtra(Word.WORD_ID_EXTRA, words.get(position).getId());
                 startActivity(intent);
-            }
-
-            @Override
-            public void onClickBackView(int position) {
             }
 
             @Override
@@ -118,12 +90,6 @@ public class WordsListActivity extends Activity {
     }
 
     /**************************************************/
-
-    public class CloseListMenuListener {
-        public void closeMenu() {
-            swipeListView.closeOpenedItems();
-        }
-    }
 
     public class LisWordsTask extends AsyncTask<Void, Void, List<Word>> {
 

@@ -8,6 +8,8 @@ import java.io.*;
 
 public class Utils {
 
+    // TODO: this package does a lot of things, so I'll refactor it soon
+
     public static final String WORDS_LEARNER_FOLDER = Environment.getExternalStorageDirectory() + File.separator + "WordsLearner";
     public static final String IMAGES_FOLDER = WORDS_LEARNER_FOLDER + File.separator + "Images";
     public static final String SOUNDS_FOLDER = WORDS_LEARNER_FOLDER + File.separator + "Sounds";
@@ -46,8 +48,7 @@ public class Utils {
 
     public static void checkDirectory(String folder) {
         File dir = new File (folder);
-        if (!dir.exists())
-        {
+        if (!dir.exists()) {
             dir.mkdirs();
         }
     }
@@ -122,6 +123,13 @@ public class Utils {
         File soundFile;
         soundFile = File.createTempFile(SOUND_TEMP_FILE_NAME, SOUND_EXTENTION, new File(SOUNDS_FOLDER));
         return soundFile;
+    }
+
+    public static void deleteFile(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.delete();
+        }
     }
 
     /**************************************************/

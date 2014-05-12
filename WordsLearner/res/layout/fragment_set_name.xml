@@ -20,7 +20,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/save"
                 android:textColor="@android:color/black"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:enabled="false"/>
     </LinearLayout>
 
 </FrameLayout>

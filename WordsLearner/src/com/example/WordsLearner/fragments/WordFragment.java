@@ -57,8 +57,6 @@ public class WordFragment extends Fragment {
 
     public class ShowImageTask extends AsyncTask<Void, Void, Bitmap> {
 
-        private int screenLongestEdge;
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -67,7 +65,6 @@ public class WordFragment extends Fragment {
             Display display = getActivity().getWindowManager().getDefaultDisplay();
             Point screenSize = new Point();
             display.getSize(screenSize);
-            screenLongestEdge = Math.max(screenSize.x, screenSize.y);
         }
 
         protected Bitmap doInBackground(Void... args) {

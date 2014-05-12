@@ -65,7 +65,7 @@ public class RecordSoundFragment extends Fragment {
 
         Word word = ((CreateWordActivity)getActivity()).getCurrentWord();
         if(word != null && word.getSoundPath() != null) {
-            setNextListenButtonsEnabled();
+            setNextAndListenButtonsEnabled();
         }
         return rootView;
     }
@@ -93,7 +93,7 @@ public class RecordSoundFragment extends Fragment {
             soundName = Utils.getSoundTempFile().getAbsolutePath();
             ((CreateWordActivity)getActivity()).setSoundTempFilePath(soundName);
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
         mRecorder = new MediaRecorder();
@@ -105,7 +105,7 @@ public class RecordSoundFragment extends Fragment {
         try {
             mRecorder.prepare();
         } catch (IOException e) {
-            Log.e(LOG_TAG, "prepare() failed");
+            Log.e(LOG_TAG, "start recording failed");
             e.printStackTrace();
         }
 
@@ -116,10 +116,10 @@ public class RecordSoundFragment extends Fragment {
         mRecorder.stop();
         mRecorder.release();
         mRecorder = null;
-        setNextListenButtonsEnabled();
+        setNextAndListenButtonsEnabled();
     }
 
-    private void setNextListenButtonsEnabled() {
+    private void setNextAndListenButtonsEnabled() {
             nextBtn.setEnabled(true);
             listenBtn.setEnabled(true);
     }
@@ -133,7 +133,7 @@ public class RecordSoundFragment extends Fragment {
             mPlayer.prepare();
             mPlayer.start();
         } catch (IOException e) {
-            Log.e(LOG_TAG, "prepare() failed");
+            Log.e(LOG_TAG, "playback failed");
         }
     }
 }

@@ -9,13 +9,12 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.activities.CreateWordActivity;
-import com.example.WordsLearner.activities.WordsListActivity;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.lazyloader.ImageLoader;
 import com.example.WordsLearner.model.Word;
+import com.example.WordsLearner.utils.Utils;
 import com.fortysevendeg.swipelistview.SwipeListView;
 
-import java.io.File;
 import java.util.List;
 
 public class WordsListAdapter extends BaseAdapter {
@@ -25,12 +24,9 @@ public class WordsListAdapter extends BaseAdapter {
     private List<Word> data;
     private ImageLoader imageLoader;
 
-    private WordsListActivity.CloseListMenuListener closeListMenuListener;
-
-    public WordsListAdapter(Context context, List<Word> data, WordsListActivity.CloseListMenuListener closeListMenuListener) {
+    public WordsListAdapter(Context context, List<Word> data) {
         this.context = context;
         this.data = data;
-        this.closeListMenuListener = closeListMenuListener;
         imageLoader=new ImageLoader(context);
     }
 
@@ -85,7 +81,7 @@ public class WordsListAdapter extends BaseAdapter {
                 intent.putExtra(CreateWordActivity.MODE_EXTRA, CreateWordActivity.MODE_EDIT);
                 context.startActivity(intent);
 
-                // necessary hack fix problem with backView getting click events when its hidden after we go back to activity
+                // very necessary hack fix problem with backView getting click events when its hidden after we go back to activity
                 swipeListView.closeOpenedItems();
             }
         });
@@ -94,6 +90,9 @@ public class WordsListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 deleteWord(position, word);
+
+                // very necessary hack fix problem with backView getting click events when its hidden after we go back to activity
+                swipeListView.closeOpenedItems();
             }
         });
 
@@ -105,21 +104,12 @@ public class WordsListAdapter extends BaseAdapter {
     private void deleteWord(int position, Word word) {
         data.remove(position);
         notifyDataSetChanged();
-        closeListMenuListener.closeMenu();
 
         WordsLearnerDataHelper db = new WordsLearnerDataHelper(context);
         db.deleteWord(word);
 
-        deleteFile(word.getImagePath());
-        deleteFile(word.getSoundPath());
-
-    }
-
-    private void deleteFile(String path) {
-        File file = new File(path);
-        if (!file.exists()) {
-            file.delete();
-        }
+        Utils.deleteFile(word.getImagePath());
+        Utils.deleteFile(word.getSoundPath());
     }
 
     /**************************************************/
