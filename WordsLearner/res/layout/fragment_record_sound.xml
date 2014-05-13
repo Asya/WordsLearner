@@ -10,6 +10,23 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center">
+        <FrameLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
+            <ImageView
+                    android:id="@+id/img_record_on"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:visibility="invisible"
+                    android:src="@drawable/red_circle"/>
+            <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+        </FrameLayout>
         <Chronometer
                 android:id="@+id/chronometer"
                 android:layout_width="wrap_content"

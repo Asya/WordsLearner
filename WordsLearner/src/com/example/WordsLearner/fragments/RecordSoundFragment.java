@@ -12,7 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.activities.CreateWordActivity;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
@@ -31,6 +32,8 @@ public class RecordSoundFragment extends Fragment {
     private Button nextBtn;
     private Button listenBtn;
     private Chronometer chronometer;
+    private ProgressBar progressBar;
+    private ImageView recordIsOn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +44,8 @@ public class RecordSoundFragment extends Fragment {
         listenBtn = (Button)rootView.findViewById(R.id.btn_listen);
         nextBtn = (Button)rootView.findViewById(R.id.btn_next);
         chronometer = (Chronometer)rootView.findViewById(R.id.chronometer);
+        progressBar = (ProgressBar)rootView.findViewById(R.id.progress);
+        recordIsOn = (ImageView)rootView.findViewById(R.id.img_record_on);
 
         recordBtn.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -103,6 +108,8 @@ public class RecordSoundFragment extends Fragment {
             e.printStackTrace();
         }
 
+        progressBar.setVisibility(View.VISIBLE);
+
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -120,6 +127,9 @@ public class RecordSoundFragment extends Fragment {
 
         chronometer.setBase(SystemClock.elapsedRealtime());
         chronometer.start();
+
+        progressBar.setVisibility(View.INVISIBLE);
+        recordIsOn.setVisibility(View.VISIBLE);
     }
 
     private void stopRecording() {
@@ -128,6 +138,7 @@ public class RecordSoundFragment extends Fragment {
         mRecorder = null;
         setNextAndListenButtonsEnabled();
         chronometer.stop();
+        recordIsOn.setVisibility(View.INVISIBLE);
     }
 
     private void setNextAndListenButtonsEnabled() {
