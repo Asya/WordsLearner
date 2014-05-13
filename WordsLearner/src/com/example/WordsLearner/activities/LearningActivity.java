@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.adapters.LearningPagerAdapter;
@@ -31,6 +32,7 @@ public class LearningActivity extends Activity {
     private ViewPager viewPager;
     private LearningPagerAdapter pagerAdapter;
     private ProgressDialog progressDialog;
+    private TextView counter;
 
     private MediaPlayer mPlayer = null;
 
@@ -43,6 +45,7 @@ public class LearningActivity extends Activity {
         setContentView(R.layout.activity_learning);
 
         firstWordId = getIntent().getIntExtra(Word.WORD_ID_EXTRA, -1);
+        counter = (TextView)findViewById(R.id.counter);
         new LisWordsTask().execute();
     }
 
@@ -90,7 +93,7 @@ public class LearningActivity extends Activity {
     private void initViewPager(final List<Word> data){
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setOffscreenPageLimit(PAGER_CACHE_PAGE_COUNT);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
             }
@@ -98,16 +101,21 @@ public class LearningActivity extends Activity {
             @Override
             public void onPageSelected(int i) {
                 startPlaying(data.get(i));
+
+                StringBuilder builder = new StringBuilder();
+                builder.append(i + 1).append("/").append(data.size()).append(" ").append(data.get(i).getName());
+                counter.setText(builder.toString());
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
             }
-        });
+        };
+        viewPager.setOnPageChangeListener(onPageChangeListener);
 
         pagerAdapter = new LearningPagerAdapter(getFragmentManager(), data);
         viewPager.setAdapter(pagerAdapter);
-        startPlaying(data.get(0));  // play sound for first item when pager was just created
+        onPageChangeListener.onPageSelected(0);  // select first item when pager was just created
     }
 
     private void startPlaying(Word word) {
