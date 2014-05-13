@@ -4,12 +4,15 @@ import android.app.Fragment;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
+import android.widget.TextView;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.activities.CreateWordActivity;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
@@ -27,6 +30,7 @@ public class RecordSoundFragment extends Fragment {
 
     private Button nextBtn;
     private Button listenBtn;
+    private Chronometer chronometer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,6 +40,7 @@ public class RecordSoundFragment extends Fragment {
         Button recordBtn = (Button)rootView.findViewById(R.id.btn_record);
         listenBtn = (Button)rootView.findViewById(R.id.btn_listen);
         nextBtn = (Button)rootView.findViewById(R.id.btn_next);
+        chronometer = (Chronometer)rootView.findViewById(R.id.chronometer);
 
         recordBtn.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -82,6 +87,8 @@ public class RecordSoundFragment extends Fragment {
             mPlayer.release();
             mPlayer = null;
         }
+
+        chronometer.stop();
     }
 
     /**************************************************/
@@ -110,6 +117,9 @@ public class RecordSoundFragment extends Fragment {
         }
 
         mRecorder.start();
+
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        chronometer.start();
     }
 
     private void stopRecording() {
@@ -117,6 +127,7 @@ public class RecordSoundFragment extends Fragment {
         mRecorder.release();
         mRecorder = null;
         setNextAndListenButtonsEnabled();
+        chronometer.stop();
     }
 
     private void setNextAndListenButtonsEnabled() {
