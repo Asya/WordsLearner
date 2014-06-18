@@ -8,6 +8,7 @@
     <string name="delete">Delete</string>
     <string name="add_item">Add Item</string>
     <string name="loading">Loading</string>
+    <string name="words">Words:</string>
 
     <!-- Choose photo fragment -->
     <string name="select_photo">Select Photo</string>

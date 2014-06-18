@@ -26,6 +26,8 @@ import java.io.*;
 
 public class ChoosePhotoFragment extends Fragment {
 
+    private final static String LOG_TAG = "ChoosePhotoFragment";
+
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int PICK_IMAGE = 2;
 
@@ -103,6 +105,7 @@ public class ChoosePhotoFragment extends Fragment {
         // Link to the image
         final String imageFilePath = cursor.getString(0);
         cursor.close();
+        Utils.log(LOG_TAG, "Image selected with path = " + imageFilePath);
 
         if (imageFilePath == null || "".equals(imageFilePath)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -110,6 +113,7 @@ public class ChoosePhotoFragment extends Fragment {
                     .setTitle(R.string.error);
             AlertDialog dialog = builder.create();
             dialog.show();
+            Utils.log(LOG_TAG, getString(R.string.no_photo_permissions));
         } else {
             ((CreateWordActivity)getActivity()).setImageTempFilePath(imageFilePath);
         }
@@ -123,6 +127,7 @@ public class ChoosePhotoFragment extends Fragment {
             try {
                 tempPhotoFile = Utils.getCameraTempFile();
                 ((CreateWordActivity)getActivity()).setImageTempFilePath(tempPhotoFile.getAbsolutePath());
+                Utils.log(LOG_TAG, "Prepared file to take a picture from camera with path = " + tempPhotoFile.getAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -151,6 +156,7 @@ public class ChoosePhotoFragment extends Fragment {
         }
 
         protected Bitmap doInBackground(Void... args) {
+            Utils.log(LOG_TAG, "loading image for preview " + imageFile);
             return Utils.decodeSampledBitmapFromFile(imageFile, 150);
         }
 
@@ -162,5 +168,4 @@ public class ChoosePhotoFragment extends Fragment {
             btnNext.setEnabled(true);
         }
     }
-
 }

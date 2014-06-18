@@ -10,7 +10,7 @@
 
     <uses-sdk android:minSdkVersion="15"/>
 
-    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher" >
+    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher" android:theme="@android:style/Theme.NoTitleBar" >
         <activity android:name=".activities.WordsListActivity"
                   android:label="@string/app_name">
             <intent-filter>

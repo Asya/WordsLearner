@@ -24,7 +24,7 @@ import java.io.IOException;
 
 public class RecordSoundFragment extends Fragment {
 
-    private final static String LOG_TAG = "RecordSound";
+    private final static String LOG_TAG = "RecordSoundFragment";
 
     private MediaRecorder mRecorder = null;
     private MediaPlayer mPlayer = null;
@@ -110,6 +110,7 @@ public class RecordSoundFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
+        Utils.log(LOG_TAG, "Creating recorder with file " + soundName);
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -124,6 +125,7 @@ public class RecordSoundFragment extends Fragment {
         }
 
         mRecorder.start();
+        Utils.log(LOG_TAG, "Start recording into file = " + soundName);
 
         chronometer.setBase(SystemClock.elapsedRealtime());
         chronometer.start();
@@ -133,6 +135,7 @@ public class RecordSoundFragment extends Fragment {
     }
 
     private void stopRecording() {
+        Utils.log(LOG_TAG, "Stop recording");
         mRecorder.stop();
         mRecorder.release();
         mRecorder = null;
@@ -148,6 +151,7 @@ public class RecordSoundFragment extends Fragment {
 
     private void startPlaying() {
         String soundName = ((CreateWordActivity)getActivity()).getSoundTempFilePath();
+        Utils.log(LOG_TAG, "Start playing file = " + soundName);
 
         mPlayer = new MediaPlayer();
         try {

@@ -19,9 +19,7 @@ public class LearningPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        WordFragment fragment = new WordFragment();
-        fragment.setWord(data.get(position));
-        return fragment;
+        return new WordFragment(data.get(position));
     }
 
     @Override

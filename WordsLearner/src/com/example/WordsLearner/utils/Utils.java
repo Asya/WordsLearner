@@ -3,12 +3,16 @@ package com.example.WordsLearner.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.*;
 
 public class Utils {
 
     // TODO: this package does a lot of things, so I'll refactor it soon
+
+    private static final boolean DEBUG_MODE = true;
+    private static final String LOG_TAG = "Utils";
 
     public static final String WORDS_LEARNER_FOLDER = Environment.getExternalStorageDirectory() + File.separator + "WordsLearner";
     public static final String IMAGES_FOLDER = WORDS_LEARNER_FOLDER + File.separator + "Images";
@@ -20,7 +24,10 @@ public class Utils {
     public static final String IMAGES_TEMP_FILE_NAME = "TempCameraImage";
     public static final String SOUND_TEMP_FILE_NAME = "TempSound";
 
+
     public static Bitmap decodeSampledBitmapFromFile(File file, int targetLongestEdge) {
+        log(LOG_TAG, "Decode bitmap from file = " + file.getAbsolutePath() + " with target longest edge = " + targetLongestEdge);
+
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(file.getAbsolutePath(), options);
@@ -43,6 +50,7 @@ public class Utils {
             }
         }
 
+        Utils.log(LOG_TAG, "inSampleSize for source %d, target %d is %d", imageLongestEdge, targetLongestEdge, inSampleSize);
         return inSampleSize;
     }
 
@@ -62,14 +70,18 @@ public class Utils {
         int bitmapSampleSize = calculateInSampleSize(imageLongestEdge, targetLongestEdge);
         float scaleRatio = (float)imageLongestEdge / (float)targetLongestEdge;
 
-        return widthIsLongest ?
+        ScaleInformation result = widthIsLongest ?
             new ScaleInformation(bitmapSampleSize, targetLongestEdge, (int)(imageHeight / scaleRatio)) :
             new ScaleInformation(bitmapSampleSize, (int)(imageWidth / scaleRatio), targetLongestEdge);
+
+        Utils.log(LOG_TAG, "image %d x %d, desired %d x %d, result: %s", imageWidth, imageHeight, desiredWidth, desiredHeight, result);
+        return result;
     }
 
     public static void copyAndResizeToScreen(String sourceImage, String outputImage, int screenWidth, int screenHeight) throws IOException {
-        // First decode with inJustDecodeBounds=true to check dimensions
+        log(LOG_TAG, "Copy and resize to screen size source file = %s, output file = %s", sourceImage, outputImage);
 
+        // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(sourceImage, options);
@@ -93,6 +105,9 @@ public class Utils {
     }
 
     public static void copyFile(String inputFilePath, String outputFolder, String outputFileName) throws IOException{
+        log(LOG_TAG, "Copy file. Input file = %s, output folder = %s, output file = %s",
+                inputFilePath, outputFolder, outputFileName);
+
         InputStream in;
         OutputStream out;
 
@@ -126,9 +141,23 @@ public class Utils {
     }
 
     public static void deleteFile(String path) {
+        log(LOG_TAG, "Delete file = " + path);
+
         File file = new File(path);
         if (!file.exists()) {
             file.delete();
+        }
+    }
+
+    public static void log(String logTag, String log) {
+        if(DEBUG_MODE) {
+            Log.d(logTag, log);
+        }
+    }
+
+    public static void log(String logTag, String format, Object... args) {
+        if(DEBUG_MODE) {
+            Log.d(logTag, String.format(format, args));
         }
     }
 
@@ -143,6 +172,11 @@ public class Utils {
             this.bitmapSampleSize = bitmapSampleSize;
             this.width = width;
             this.height = height;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Sample size: %d, size %d x %d", bitmapSampleSize, width, height);
         }
     }
 }

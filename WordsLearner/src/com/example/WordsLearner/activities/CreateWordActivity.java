@@ -2,13 +2,17 @@ package com.example.WordsLearner.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
 import com.example.WordsLearner.model.Word;
+import com.example.WordsLearner.utils.Utils;
 import com.example.WordsLearner.views.OneSideViewPager;
 import com.viewpagerindicator.CirclePageIndicator;
 
 public class CreateWordActivity extends Activity {
+
+    private final static String LOG_TAG = "CreateWordActivity";
 
     public final static String MODE_EXTRA = "mode_extra";
     public final static int MODE_CREATE = 0;
@@ -38,17 +42,22 @@ public class CreateWordActivity extends Activity {
             currentWord = (Word)getIntent().getSerializableExtra(Word.WORD_EXTRA);
             mode = getIntent().getIntExtra(MODE_EXTRA, MODE_CREATE);
         }
+
+        Utils.log(LOG_TAG, "Word in Intent = " + currentWord);
+        Utils.log(LOG_TAG, "Mode = " + mode);
     }
 
     @Override
     public void onBackPressed() {
         if (viewPager.getCurrentItem() == 0) {
+            Utils.log(LOG_TAG, "Close activity on back pressed at the first page");
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
         } else {
             // Otherwise, select the previous step.
             viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+            Utils.log(LOG_TAG, "On back pressed to select the previous page = " + viewPager.getCurrentItem());
         }
     }
 
@@ -59,6 +68,7 @@ public class CreateWordActivity extends Activity {
     }
 
     public void setImageTempFilePath(String imageTempFilePath) {
+        Utils.log(LOG_TAG, "setting path to image " + imageTempFilePath);
         this.imageTempFilePath = imageTempFilePath;
     }
 
@@ -67,6 +77,7 @@ public class CreateWordActivity extends Activity {
     }
 
     public void setSoundTempFilePath(String soundTempFilePath) {
+        Utils.log(LOG_TAG, "setting path to audio " + soundTempFilePath);
         this.soundTempFilePath = soundTempFilePath;
     }
 

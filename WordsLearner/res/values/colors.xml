@@ -4,6 +4,6 @@
     <color name="background_app">#dedede</color>
 
     <!-- SwipeListView -->
-    <color name="background_list_front">#ffffff</color>
-    <color name="text_title">#444444</color>
+    <color name="text_title">#1d7eaa</color>
+    <color name="selected_bg">#cccccc</color>
 </resources>

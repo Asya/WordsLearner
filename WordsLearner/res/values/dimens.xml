@@ -3,7 +3,7 @@
 
     <!-- SwipeListView -->
     <dimen name="padding_default">8dp</dimen>
-    <dimen name="height_list">90dp</dimen>
+    <dimen name="height_list">80dp</dimen>
     <dimen name="size_list_image">64dp</dimen>
     <dimen name="font_size_title">17sp</dimen>
 

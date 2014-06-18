@@ -9,13 +9,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import com.example.WordsLearner.model.Word;
 import com.example.WordsLearner.utils.PreferencesManager;
+import com.example.WordsLearner.utils.Utils;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class WordsLearnerDataHelper extends SQLiteOpenHelper {
 
-    private static final String LOG_TAG = "WordsLearnerDB: ";
+    private static final String LOG_TAG = "WordsLearnerDB";
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "WordsLearnerDB";
@@ -63,7 +64,7 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
         db.insert(TABLE_WORDS, null, values);
         db.close();
 
-        Log.d(LOG_TAG + "addWord", word.toString());
+        Utils.log(LOG_TAG, "Add word " + word.toString());
         setTimestamp();
     }
 
@@ -85,7 +86,7 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
         }
 
         db.close();
-        Log.d(LOG_TAG + "getAllWords", words.toString());
+        Utils.log(LOG_TAG, "getAllWords = " + words.toString());
         return words;
     }
 
@@ -100,7 +101,7 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
         int i = db.update(TABLE_WORDS, values, KEY_ID + "=?", new String[] { String.valueOf(word.getId()) });
         db.close();
 
-        Log.d(LOG_TAG + "updatedWord", word.toString());
+        Log.d(LOG_TAG, "updatedWord " + word.toString());
         setTimestamp();
         return i;
     }
@@ -110,7 +111,7 @@ public class WordsLearnerDataHelper extends SQLiteOpenHelper {
         db.delete(TABLE_WORDS, KEY_ID + "=?", new String[] { String.valueOf(word.getId()) });
         db.close();
 
-        Log.d(LOG_TAG + "deleteWord", word.toString());
+        Log.d(LOG_TAG, "deleteWord " + word.toString());
         setTimestamp();
     }
 

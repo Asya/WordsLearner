@@ -3,7 +3,7 @@ package com.example.WordsLearner.model;
 
 import java.io.Serializable;
 
-public class Word implements Serializable{
+public class    Word implements Serializable{
 
     public final static String WORD_ID_EXTRA = "word_id";
     public final static String WORD_EXTRA = "word";

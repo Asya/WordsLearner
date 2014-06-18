@@ -19,9 +19,15 @@ import java.io.File;
 
 public class WordFragment extends Fragment {
 
+    private final static String LOG_TAG = "WordFragment";
     private Word word;
 
     private ImageView imageView;
+
+    public WordFragment(Word word) {
+        Utils.log(LOG_TAG, "initialised with word = " + word);
+        this.word = word;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,6 +36,7 @@ public class WordFragment extends Fragment {
         imageView = (ImageView)rootView.findViewById(R.id.image);
 
         if (savedInstanceState != null) {
+            Utils.log(LOG_TAG, "savedInstanceState word = " + word);
             word = (Word)savedInstanceState.getSerializable(Word.WORD_EXTRA);
         }
 
@@ -41,16 +48,6 @@ public class WordFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(Word.WORD_EXTRA, word);
-    }
-
-    /**************************************************/
-
-    public void setWord(Word word) {
-        this.word = word;
-    }
-
-    public Word getWord() {
-        return word;
     }
 
     /**************************************************/
@@ -68,7 +65,9 @@ public class WordFragment extends Fragment {
         }
 
         protected Bitmap doInBackground(Void... args) {
-            return BitmapFactory.decodeFile(new File(Utils.IMAGES_FOLDER, word.getImagePath()).getAbsolutePath());
+            String location = new File(Utils.IMAGES_FOLDER, word.getImagePath()).getAbsolutePath();
+            Utils.log(LOG_TAG, "loading image %s", location);
+            return BitmapFactory.decodeFile(location);
         }
 
         protected void onPostExecute(Bitmap bitmap) {

@@ -25,6 +25,8 @@ public class SetNameFragment extends Fragment {
 
     // TODO: this fragment is responsible for setting name, moving image/audio files and creating/updating Words in db. I am going to refactor that soon.
 
+    private final static String LOG_TAG = "SetNameFragment";
+
     private EditText nameEdit;
     private Button saveBtn;
     private ProgressDialog progressDialog;
@@ -80,6 +82,8 @@ public class SetNameFragment extends Fragment {
 
         String resultFileName = UUID.randomUUID().toString() + Utils.SOUND_EXTENTION;
         File tempFile = new File(soundTempFilePath);
+
+        Utils.log(LOG_TAG, "Move sound file from = " + soundTempFilePath + " to = " + resultFileName);
         try {
             Utils.copyFile(tempFile.getAbsolutePath(), Utils.SOUNDS_FOLDER, resultFileName);
             tempFile.delete();
@@ -103,6 +107,8 @@ public class SetNameFragment extends Fragment {
 
         String resultFileName = UUID.randomUUID().toString() + Utils.IMAGE_EXTENTION;
         File file = new File(imageTempFilePath);
+
+        Utils.log(LOG_TAG, "Move image file from = " + imageTempFilePath + " to = " + resultFileName);
         try {
             Display display = getActivity().getWindowManager().getDefaultDisplay();
             Point size = new Point();

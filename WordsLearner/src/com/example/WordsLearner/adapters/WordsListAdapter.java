@@ -3,6 +3,7 @@ package com.example.WordsLearner.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +20,19 @@ import java.util.List;
 
 public class WordsListAdapter extends BaseAdapter {
 
+    private final static String LOG_TAG = "WordsListAdapter";
+
     private Context context;
 
     private List<Word> data;
     private ImageLoader imageLoader;
+    private Typeface typeFace;
 
     public WordsListAdapter(Context context, List<Word> data) {
         this.context = context;
         this.data = data;
         imageLoader=new ImageLoader(context);
+        typeFace = Typeface.createFromAsset(context.getAssets(),"fonts/chalk.ttf");
     }
 
     @Override
@@ -57,6 +62,7 @@ public class WordsListAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.ivImage = (ImageView) convertView.findViewById(R.id.image);
             holder.tvTitle = (TextView) convertView.findViewById(R.id.name);
+            holder.tvTitle.setTypeface(typeFace);
             holder.btnEdit = (Button) convertView.findViewById(R.id.btn_edit);
             holder.btnDelete = (Button) convertView.findViewById(R.id.btn_delete);
             convertView.setTag(holder);
@@ -76,6 +82,8 @@ public class WordsListAdapter extends BaseAdapter {
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utils.log(LOG_TAG, "Edit pressed at position " + position + " word = " + word);
+
                 Intent intent = new Intent(context, CreateWordActivity.class);
                 intent.putExtra(Word.WORD_EXTRA, word);
                 intent.putExtra(CreateWordActivity.MODE_EXTRA, CreateWordActivity.MODE_EDIT);
@@ -89,6 +97,7 @@ public class WordsListAdapter extends BaseAdapter {
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utils.log(LOG_TAG, "Delete pressed at position " + position + " word = " + word);
                 deleteWord(position, word);
 
                 // very necessary hack fix problem with backView getting click events when its hidden after we go back to activity

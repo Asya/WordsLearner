@@ -3,15 +3,19 @@ package com.example.WordsLearner.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import com.example.WordsLearner.adapters.WordsListAdapter;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
 import com.example.WordsLearner.model.Word;
 import com.example.WordsLearner.utils.PreferencesManager;
+import com.example.WordsLearner.utils.Utils;
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
 
@@ -19,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WordsListActivity extends Activity {
+
+    private final static String LOG_TAG = "WordsListActivity";
 
     private WordsListAdapter adapter;
     private SwipeListView swipeListView;
@@ -43,6 +49,8 @@ public class WordsListActivity extends Activity {
         swipeListView.setSwipeListViewListener(new BaseSwipeListViewListener() {
             @Override
             public void onClickFrontView(int position) {
+                Utils.log(LOG_TAG, "List item clicked at position = " + position + " word = " + adapter.getItem(position));
+
                 Intent intent = new Intent(WordsListActivity.this, LearningActivity.class);
                 intent.putExtra(Word.WORD_ID_EXTRA, words.get(position).getId());
                 startActivity(intent);
@@ -51,13 +59,16 @@ public class WordsListActivity extends Activity {
             @Override
             public void onDismiss(int[] reverseSortedPositions) {
                 for (int position : reverseSortedPositions) {
+                    Utils.log(LOG_TAG, "Dismiss list item at position = " + position + " word = " + adapter.getItem(position));
                     words.remove(position);
                 }
                 adapter.notifyDataSetChanged();
             }
         });
 
+        Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/chalk.ttf");
         Button addItemBtn = (Button) findViewById(R.id.add_item_btn);
+        addItemBtn.setTypeface(typeFace);
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +77,11 @@ public class WordsListActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        LayoutInflater inflater = getLayoutInflater();
+        View header = inflater.inflate(R.layout.words_list_header, swipeListView, false);
+        ((TextView)header.findViewById(R.id.words_header)).setTypeface(typeFace);
+        swipeListView.addHeaderView(header, null, false);
     }
 
     @Override
@@ -75,6 +91,7 @@ public class WordsListActivity extends Activity {
         swipeListView.setSwipeActionLeft(SwipeListView.SWIPE_ACTION_REVEAL);
         swipeListView.setSwipeOpenOnLongPress(true);
 
+        Utils.log(LOG_TAG, "Resume.DBTimestamp = " + prefs.getDbTimestamp() + " ListDBTimestamp = " + dbTimestamp);
         if(prefs.getDbTimestamp() != dbTimestamp) {
             new LisWordsTask().execute();
         }
@@ -106,7 +123,9 @@ public class WordsListActivity extends Activity {
 
         protected List<Word> doInBackground(Void... args) {
             WordsLearnerDataHelper db = new WordsLearnerDataHelper(WordsListActivity.this);
-            return db.getAllWords();
+            List<Word> result = db.getAllWords();
+            Utils.log(LOG_TAG, "LisWordsTask resulted words collection = " + result.toString());
+            return result;
         }
 
         protected void onPostExecute(List<Word> result) {

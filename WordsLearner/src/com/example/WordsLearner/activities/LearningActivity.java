@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class LearningActivity extends Activity {
 
-    private final static String LOG_TAG = "LearnWords";
+    private final static String LOG_TAG = "LearnWordsActivity";
 
     private final static int PAGER_CACHE_PAGE_COUNT = 2;
     private final static int BACK_PRESS_TIMEOUT = 3000;
@@ -44,7 +44,11 @@ public class LearningActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learning);
 
-        firstWordId = getIntent().getIntExtra(Word.WORD_ID_EXTRA, -1);
+        if(getIntent() != null) {
+            firstWordId = getIntent().getIntExtra(Word.WORD_ID_EXTRA, -1);
+            Utils.log(LOG_TAG, "Selected word id in Intent = " + firstWordId);
+        }
+
         counter = (TextView)findViewById(R.id.counter);
         new LisWordsTask().execute();
     }
@@ -52,7 +56,6 @@ public class LearningActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         if (progressDialog != null) {
             progressDialog.dismiss();
             progressDialog = null;
@@ -100,6 +103,8 @@ public class LearningActivity extends Activity {
 
             @Override
             public void onPageSelected(int i) {
+                Utils.log(LOG_TAG, "onPageSelected position = " + i + " word = " + data.get(i));
+
                 startPlaying(data.get(i));
 
                 StringBuilder builder = new StringBuilder();
@@ -120,6 +125,7 @@ public class LearningActivity extends Activity {
 
     private void startPlaying(Word word) {
         String fileName = word.getSoundPath();
+        Utils.log(LOG_TAG, "Playing audio file " + fileName);
         mPlayer = new MediaPlayer();
         try {
             mPlayer.setDataSource(new File(Utils.SOUNDS_FOLDER, fileName).getAbsolutePath());
@@ -158,6 +164,8 @@ public class LearningActivity extends Activity {
                     break;
                 }
             }
+
+            Utils.log(LOG_TAG, "LisWordsTask resulted words collection = " + result.toString());
             return result;
         }
 

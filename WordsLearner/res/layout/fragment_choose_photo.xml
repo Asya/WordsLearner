@@ -30,17 +30,20 @@
                 android:id="@+id/btn_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/select_photo"/>
+                android:text="@string/select_photo"
+                android:background="@drawable/red_btn_state"/>
         <Button
                 android:id="@+id/btn_camera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/camera"/>
+                android:text="@string/camera"
+                android:background="@drawable/red_btn_state"/>
         <Button
                 android:id="@+id/btn_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/next"
-                android:enabled="false"/>
+                android:enabled="false"
+                android:background="@drawable/red_btn_state"/>
     </LinearLayout>
 </FrameLayout>
