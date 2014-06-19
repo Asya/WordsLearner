@@ -57,7 +57,7 @@ public class SetNameFragment extends Fragment {
         });
 
         title = (TextView)rootView.findViewById(R.id.text);
-        title.setText(getString(R.string.name));
+        title.setText(R.string.name);
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -49,7 +49,7 @@ public class ChoosePhotoFragment extends Fragment {
         progressBar = (ProgressBar) rootView.findViewById(R.id.progress);
 
         title = (TextView)rootView.findViewById(R.id.text);
-        title.setText(getString(R.string.photo));
+        title.setText(R.string.photo);
 
         btnSelect = (Button) rootView.findViewById(R.id.btn_select);
         btnSelect.setOnClickListener(new View.OnClickListener() {

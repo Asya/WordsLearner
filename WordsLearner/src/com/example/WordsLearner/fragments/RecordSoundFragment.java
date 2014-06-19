@@ -35,6 +35,8 @@ public class RecordSoundFragment extends Fragment {
     private ProgressBar progressBar;
     private ImageView recordIsOn;
 
+    private boolean isRecoding = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -48,17 +50,16 @@ public class RecordSoundFragment extends Fragment {
         recordIsOn = (ImageView)rootView.findViewById(R.id.img_record_on);
 
         title = (TextView)rootView.findViewById(R.id.text);
-        title.setText(getString(R.string.sound));
+        title.setText(R.string.sound);
 
-        recordBtn.setOnTouchListener(new View.OnTouchListener() {
+        recordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    startRecording();
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            public void onClick(View v) {
+                if (isRecoding) {
                     stopRecording();
+                } else {
+                    startRecording();
                 }
-                return true;
             }
         });
 
@@ -123,6 +124,9 @@ public class RecordSoundFragment extends Fragment {
         }
 
         progressBar.setVisibility(View.VISIBLE);
+        recordBtn.setText(R.string.stop);
+
+        isRecoding = true;
 
         Utils.log(LOG_TAG, "Creating recorder with file " + soundName);
         mRecorder = new MediaRecorder();
@@ -156,6 +160,9 @@ public class RecordSoundFragment extends Fragment {
         setNextAndListenButtonsEnabled();
         chronometer.stop();
         recordIsOn.setImageResource(R.drawable.stop);
+        recordBtn.setText(R.string.record);
+
+        isRecoding = false;
     }
 
     private void setNextAndListenButtonsEnabled() {
