@@ -99,9 +99,16 @@ public class ChoosePhotoFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ChoosePhotoFragment.PICK_IMAGE && data != null && data.getData() != null) {
-            saveExistingImagePath(data);
-            File imageFile = new File(((CreateWordActivity)getActivity()).getImageTempFilePath());
-            new LoadPreviewAsync(imageFile).execute();
+            if(saveExistingImagePath(data)) {
+                File imageFile = new File(((CreateWordActivity)getActivity()).getImageTempFilePath());
+                new LoadPreviewAsync(imageFile).execute();
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.no_photo_permissions)
+                        .setTitle(R.string.error);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         } else if (requestCode == ChoosePhotoFragment.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             File imageFile = new File(((CreateWordActivity)getActivity()).getImageTempFilePath());
             new LoadPreviewAsync(imageFile).execute();
@@ -112,7 +119,7 @@ public class ChoosePhotoFragment extends Fragment {
 
     /**************************************************/
 
-    private void saveExistingImagePath(Intent data) {
+    private boolean saveExistingImagePath(Intent data) {
         Uri _uri = data.getData();
 
         // User had pick an image.
@@ -126,15 +133,12 @@ public class ChoosePhotoFragment extends Fragment {
         Utils.log(LOG_TAG, "Image selected with path = " + imageFilePath);
 
         if (imageFilePath == null || "".equals(imageFilePath)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.no_photo_permissions)
-                    .setTitle(R.string.error);
-            AlertDialog dialog = builder.create();
-            dialog.show();
             Utils.log(LOG_TAG, getString(R.string.no_photo_permissions));
-        } else {
-            ((CreateWordActivity)getActivity()).setImageTempFilePath(imageFilePath);
+            return false;
         }
+
+        ((CreateWordActivity)getActivity()).setImageTempFilePath(imageFilePath);
+        return true;
     }
 
     private void dispatchTakePictureIntent() {
