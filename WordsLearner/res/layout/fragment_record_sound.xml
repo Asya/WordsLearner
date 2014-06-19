@@ -2,7 +2,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+    <include
+            layout="@layout/title_header"/>
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -17,8 +18,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:visibility="invisible"
-                    android:src="@drawable/red_circle"/>
+                    android:src="@drawable/stop"/>
             <ProgressBar
                     android:id="@+id/progress"
                     android:layout_height="wrap_content"
@@ -26,28 +26,33 @@
                     android:layout_gravity="center"
                     android:visibility="gone"
                     android:indeterminateDrawable="@drawable/progress"/>
+            <Chronometer
+                    android:id="@+id/chronometer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    style="@style/MediumText"/>
         </FrameLayout>
-        <Chronometer
-                android:id="@+id/chronometer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+        <Button
+                android:id="@+id/btn_record"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/record"
+                style="@style/MediumRedButton"
                 />
-        <Button android:id="@+id/btn_record"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/record"/>
         <Button
                 android:id="@+id/btn_listen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="@string/listen"
-                android:enabled="false"/>
+                android:enabled="false"
+                style="@style/MediumRedButton"
+                />
         <Button
                 android:id="@+id/btn_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="@string/next"
-                android:enabled="false"/>
+                android:enabled="false"
+                style="@style/MediumRedButton"
+                />
     </LinearLayout>
 
 </FrameLayout>

@@ -1,6 +1,7 @@
 package com.example.WordsLearner.fragments;
 
 import android.app.Fragment;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -10,10 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Chronometer;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.*;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.activities.CreateWordActivity;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
@@ -29,8 +27,10 @@ public class RecordSoundFragment extends Fragment {
     private MediaRecorder mRecorder = null;
     private MediaPlayer mPlayer = null;
 
+    private TextView title;
     private Button nextBtn;
     private Button listenBtn;
+    private Button recordBtn;
     private Chronometer chronometer;
     private ProgressBar progressBar;
     private ImageView recordIsOn;
@@ -40,12 +40,15 @@ public class RecordSoundFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_record_sound, container, false);
 
-        Button recordBtn = (Button)rootView.findViewById(R.id.btn_record);
+        recordBtn = (Button)rootView.findViewById(R.id.btn_record);
         listenBtn = (Button)rootView.findViewById(R.id.btn_listen);
         nextBtn = (Button)rootView.findViewById(R.id.btn_next);
         chronometer = (Chronometer)rootView.findViewById(R.id.chronometer);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progress);
         recordIsOn = (ImageView)rootView.findViewById(R.id.img_record_on);
+
+        title = (TextView)rootView.findViewById(R.id.text);
+        title.setText(getString(R.string.sound));
 
         recordBtn.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -77,6 +80,8 @@ public class RecordSoundFragment extends Fragment {
         if(word != null && word.getSoundPath() != null) {
             setNextAndListenButtonsEnabled();
         }
+
+        setTypeface();
         return rootView;
     }
 
@@ -97,6 +102,15 @@ public class RecordSoundFragment extends Fragment {
     }
 
     /**************************************************/
+
+    private void setTypeface() {
+        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/chalk.ttf");
+        title.setTypeface(typeFace);
+        nextBtn.setTypeface(typeFace);
+        listenBtn.setTypeface(typeFace);
+        recordBtn.setTypeface(typeFace);
+        chronometer.setTypeface(typeFace);
+    }
 
     private void startRecording() {
         Utils.checkDirectory(Utils.SOUNDS_FOLDER);
@@ -131,7 +145,7 @@ public class RecordSoundFragment extends Fragment {
         chronometer.start();
 
         progressBar.setVisibility(View.INVISIBLE);
-        recordIsOn.setVisibility(View.VISIBLE);
+        recordIsOn.setImageResource(R.drawable.record);
     }
 
     private void stopRecording() {
@@ -141,7 +155,7 @@ public class RecordSoundFragment extends Fragment {
         mRecorder = null;
         setNextAndListenButtonsEnabled();
         chronometer.stop();
-        recordIsOn.setVisibility(View.INVISIBLE);
+        recordIsOn.setImageResource(R.drawable.stop);
     }
 
     private void setNextAndListenButtonsEnabled() {

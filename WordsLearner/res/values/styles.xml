@@ -35,13 +35,16 @@
         <item name="android:layout_margin">10dp</item>
     </style>
 
-    <style name="MediumRedButton">
+    <style name="MediumRedButton" parent="MediumText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/red_btn_state</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="MediumText">
         <item name="android:textColor">@color/text</item>
         <item name="android:textSize">@dimen/normal_text</item>
-        <item name="android:gravity">center</item>
     </style>
 
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">

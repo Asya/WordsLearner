@@ -19,6 +19,7 @@
     <string name="next">Next</string>
 
     <!-- Record sound fragment -->
+    <string name="sound">Sound:</string>
     <string name="record">Record</string>
     <string name="listen">Listen</string>
 

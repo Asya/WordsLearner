@@ -1,7 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
+    <include
+            layout="@layout/title_header"/>
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -15,12 +16,11 @@
                 android:hint="@string/name"/>
         <Button
                 android:id="@+id/btn_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="@string/save"
-                android:textColor="@android:color/black"
-                android:singleLine="true"
-                android:enabled="false"/>
+                android:enabled="false"
+                style="@style/MediumRedButton"
+                />
     </LinearLayout>
 
 </FrameLayout>
