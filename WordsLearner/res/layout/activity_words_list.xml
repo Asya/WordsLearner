@@ -25,11 +25,8 @@
           android:src="@drawable/list_divider"/>
     <Button
             android:id="@+id/add_item_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/red_btn_state"
-            android:text="@string/add_item"
-            android:textColor="@color/text_title"
             android:layout_gravity="center_horizontal"
-            android:gravity="center"/>
+            android:text="@string/add_item"
+            style="@style/MediumRedButton"
+            />
 </LinearLayout>

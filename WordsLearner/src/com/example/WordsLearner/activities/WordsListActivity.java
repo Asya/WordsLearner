@@ -79,8 +79,10 @@ public class WordsListActivity extends Activity {
         });
 
         LayoutInflater inflater = getLayoutInflater();
-        View header = inflater.inflate(R.layout.words_list_header, swipeListView, false);
-        ((TextView)header.findViewById(R.id.words_header)).setTypeface(typeFace);
+        View header = inflater.inflate(R.layout.title_header, swipeListView, false);
+        TextView title = ((TextView)header.findViewById(R.id.text));
+        title.setTypeface(typeFace);
+        title.setText(getString(R.string.words));
         swipeListView.addHeaderView(header, null, false);
     }
 
