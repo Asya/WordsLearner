@@ -9,6 +9,7 @@ import com.example.WordsLearner.model.Word;
 import com.example.WordsLearner.utils.Utils;
 import com.example.WordsLearner.views.OneSideViewPager;
 import com.viewpagerindicator.CirclePageIndicator;
+import com.viewpagerindicator.IconPageIndicator;
 
 public class CreateWordActivity extends Activity {
 
@@ -25,7 +26,7 @@ public class CreateWordActivity extends Activity {
     private String soundTempFilePath;
 
     private OneSideViewPager viewPager;
-    private CirclePageIndicator circlePageIndicator;
+    private IconPageIndicator circlePageIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class CreateWordActivity extends Activity {
         viewPager = (OneSideViewPager)findViewById(R.id.pager);
         viewPager.setAdapter(new CreateWordPagerAdapter(getFragmentManager()));
 
-        circlePageIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
+        circlePageIndicator = (IconPageIndicator)findViewById(R.id.indicator);
         circlePageIndicator.setViewPager(viewPager);
 
         if(getIntent() != null) {

@@ -1,8 +1,9 @@
 <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background_app">
+        android:layout_height="match_parent">
+    <include
+            layout="@layout/title_header"/>
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -12,12 +13,16 @@
 
         <FrameLayout
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content">
+                android:layout_width="wrap_content"
+                android:background="@drawable/photo_frame">
+
             <ImageView
                     android:id="@+id/img_preview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"/>
+                    android:layout_width="125dp"
+                    android:layout_height="161dp"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center"
+                    />
             <ProgressBar
                     android:id="@+id/progress"
                     android:layout_height="wrap_content"
@@ -28,22 +33,22 @@
 
         <Button
                 android:id="@+id/btn_select"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="@string/select_photo"
-                android:background="@drawable/red_btn_state"/>
+                style="@style/MediumRedButton"
+                />
         <Button
                 android:id="@+id/btn_camera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="@string/camera"
-                android:background="@drawable/red_btn_state"/>
+                style="@style/MediumRedButton"
+                />
         <Button
                 android:id="@+id/btn_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="@string/next"
                 android:enabled="false"
-                android:background="@drawable/red_btn_state"/>
+                style="@style/MediumRedButton"
+                />
     </LinearLayout>
 </FrameLayout>

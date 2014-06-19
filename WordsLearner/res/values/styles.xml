@@ -24,8 +24,8 @@
 
     <style name="ListTitle">
         <item name="android:paddingBottom">@dimen/padding_default</item>
-        <item name="android:textColor">@color/text_title</item>
-        <item name="android:textSize">@dimen/font_size_title</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/normal_text</item>
         <item name="android:textStyle">bold</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
@@ -39,9 +39,21 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/red_btn_state</item>
-        <item name="android:textColor">@color/text_title</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/normal_text</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
+        <item name="android:background">@drawable/custom_tab_indicator</item>
+        <item name="android:textColor">#FF555555</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:dividerPadding">10dp</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:fadingEdge">horizontal</item>
+        <item name="android:fadingEdgeLength">8dp</item>
     </style>
 
 </resources>

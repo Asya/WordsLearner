@@ -2,8 +2,8 @@
 
 <resources>
     <color name="background_app">#dedede</color>
+    <color name="text">#1d7eaa</color>
 
     <!-- SwipeListView -->
-    <color name="text_title">#1d7eaa</color>
     <color name="selected_bg">#cccccc</color>
 </resources>

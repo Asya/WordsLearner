@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.activities.CreateWordActivity;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
@@ -31,7 +33,10 @@ public class ChoosePhotoFragment extends Fragment {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int PICK_IMAGE = 2;
 
+    private TextView title;
     private Button btnNext;
+    private Button btnSelect;
+    private Button btnCamera;
     private ImageView imagePreview;
     private ProgressBar progressBar;
 
@@ -43,7 +48,10 @@ public class ChoosePhotoFragment extends Fragment {
         imagePreview = (ImageView) rootView.findViewById(R.id.img_preview);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progress);
 
-        Button btnSelect = (Button) rootView.findViewById(R.id.btn_select);
+        title = (TextView)rootView.findViewById(R.id.text);
+        title.setText(getString(R.string.photo));
+
+        btnSelect = (Button) rootView.findViewById(R.id.btn_select);
         btnSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,7 +62,7 @@ public class ChoosePhotoFragment extends Fragment {
             }
         });
 
-        Button btnCamera = (Button) rootView.findViewById(R.id.btn_camera);
+        btnCamera = (Button) rootView.findViewById(R.id.btn_camera);
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +83,17 @@ public class ChoosePhotoFragment extends Fragment {
             new LoadPreviewAsync(new File(Utils.IMAGES_FOLDER, word.getImagePath())).execute();
         }
 
+        setTypeface();
+
         return rootView;
+    }
+
+    private void setTypeface() {
+        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/chalk.ttf");
+        title.setTypeface(typeFace);
+        btnCamera.setTypeface(typeFace);
+        btnNext.setTypeface(typeFace);
+        btnSelect.setTypeface(typeFace);
     }
 
     @Override
@@ -157,7 +175,7 @@ public class ChoosePhotoFragment extends Fragment {
 
         protected Bitmap doInBackground(Void... args) {
             Utils.log(LOG_TAG, "loading image for preview " + imageFile);
-            return Utils.decodeSampledBitmapFromFile(imageFile, 150);
+            return Utils.decodeSampledBitmapFromFile(imageFile, 300);
         }
 
         protected void onPostExecute(Bitmap result) {
