@@ -49,6 +49,7 @@ public class WordsListActivity extends Activity {
         swipeListView.setSwipeListViewListener(new BaseSwipeListViewListener() {
             @Override
             public void onClickFrontView(int position) {
+                position -= 1;
                 Utils.log(LOG_TAG, "List item clicked at position = " + position + " word = " + adapter.getItem(position));
 
                 Intent intent = new Intent(WordsListActivity.this, LearningActivity.class);
@@ -59,6 +60,7 @@ public class WordsListActivity extends Activity {
             @Override
             public void onDismiss(int[] reverseSortedPositions) {
                 for (int position : reverseSortedPositions) {
+                    position -= 1;
                     Utils.log(LOG_TAG, "Dismiss list item at position = " + position + " word = " + adapter.getItem(position));
                     words.remove(position);
                 }
