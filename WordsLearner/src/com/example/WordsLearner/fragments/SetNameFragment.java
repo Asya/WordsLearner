@@ -3,6 +3,7 @@ package com.example.WordsLearner.fragments;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.activities.CreateWordActivity;
 import com.example.WordsLearner.db.WordsLearnerDataHelper;
@@ -27,6 +29,7 @@ public class SetNameFragment extends Fragment {
 
     private final static String LOG_TAG = "SetNameFragment";
 
+    private TextView title;
     private EditText nameEdit;
     private Button saveBtn;
     private ProgressDialog progressDialog;
@@ -53,12 +56,17 @@ public class SetNameFragment extends Fragment {
             }
         });
 
+        title = (TextView)rootView.findViewById(R.id.text);
+        title.setText(getString(R.string.name));
+
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new SaveTask().execute();
             }
         });
+
+        setTypeface();
         return rootView;
     }
 
@@ -73,6 +81,13 @@ public class SetNameFragment extends Fragment {
     }
 
     /**************************************************/
+
+    private void setTypeface() {
+        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/chalk.ttf");
+        title.setTypeface(typeFace);
+        saveBtn.setTypeface(typeFace);
+        nameEdit.setTypeface(typeFace);
+    }
 
     private String moveSoundFile() {
         String soundTempFilePath = ((CreateWordActivity)getActivity()).getSoundTempFilePath();

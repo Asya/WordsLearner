@@ -13,7 +13,9 @@
                 android:id="@+id/edit_name"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/name"/>
+                android:hint="@string/name_template"
+                android:background="@drawable/edittext"
+                style="@style/MediumText"/>
         <Button
                 android:id="@+id/btn_save"
                 android:layout_gravity="center_horizontal"

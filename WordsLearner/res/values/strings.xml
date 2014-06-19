@@ -24,7 +24,8 @@
     <string name="listen">Listen</string>
 
     <!-- Record sound fragment -->
-    <string name="name">Name</string>
+    <string name="name">Name:</string>
+    <string name="name_template">Name</string>
     <string name="save">Save</string>
 
     <!-- Swipe list activity -->
