@@ -1,5 +1,6 @@
 package com.example.WordsLearner.fragments;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.graphics.Point;
@@ -32,7 +33,7 @@ public class SetNameFragment extends Fragment {
     private TextView title;
     private EditText nameEdit;
     private Button saveBtn;
-    private ProgressDialog progressDialog;
+    private Dialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -174,9 +175,10 @@ public class SetNameFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage(getString(R.string.loading));
+            progressDialog = new Dialog(getActivity());
+            progressDialog.setContentView(R.layout.dialog_loading);
             progressDialog.setCancelable(false);
+            progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             progressDialog.show();
         }
 

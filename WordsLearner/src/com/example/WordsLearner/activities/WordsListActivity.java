@@ -1,6 +1,7 @@
 package com.example.WordsLearner.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -28,7 +29,7 @@ public class WordsListActivity extends Activity {
 
     private WordsListAdapter adapter;
     private SwipeListView swipeListView;
-    private ProgressDialog progressDialog;
+    private Dialog progressDialog;
 
     private PreferencesManager prefs;
 
@@ -119,9 +120,10 @@ public class WordsListActivity extends Activity {
             super.onPreExecute();
             dbTimestamp = prefs.getDbTimestamp();
 
-            progressDialog = new ProgressDialog(WordsListActivity.this);
-            progressDialog.setMessage(getString(R.string.loading));
+            progressDialog = new Dialog(WordsListActivity.this);
+            progressDialog.setContentView(R.layout.dialog_loading);
             progressDialog.setCancelable(false);
+            progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             progressDialog.show();
         }
 
