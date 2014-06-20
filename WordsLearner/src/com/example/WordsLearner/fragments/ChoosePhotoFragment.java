@@ -88,14 +88,6 @@ public class ChoosePhotoFragment extends Fragment {
         return rootView;
     }
 
-    private void setTypeface() {
-        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/chalk.ttf");
-        title.setTypeface(typeFace);
-        btnCamera.setTypeface(typeFace);
-        btnNext.setTypeface(typeFace);
-        btnSelect.setTypeface(typeFace);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ChoosePhotoFragment.PICK_IMAGE && data != null && data.getData() != null) {
@@ -118,6 +110,14 @@ public class ChoosePhotoFragment extends Fragment {
     }
 
     /**************************************************/
+
+    private void setTypeface() {
+        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/chalk.ttf");
+        title.setTypeface(typeFace);
+        btnCamera.setTypeface(typeFace);
+        btnNext.setTypeface(typeFace);
+        btnSelect.setTypeface(typeFace);
+    }
 
     private boolean saveExistingImagePath(Intent data) {
         Uri _uri = data.getData();

@@ -1,0 +1,17 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_app"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:src="@drawable/logo"/>
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:src="@drawable/big_child_portrait"
+            android:layout_marginTop="-30dp"/>
+</LinearLayout>

@@ -32,4 +32,9 @@
     <!-- Swipe list activity -->
     <string name="please_click_back">Please click BACK again to exit</string>
 
+    <!-- Person activity -->
+    <string name="who_are_you">Who are you?</string>
+    <string name="child">Kid</string>
+    <string name="parent">Parent</string>
+
 </resources>

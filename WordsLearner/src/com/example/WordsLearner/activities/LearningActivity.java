@@ -156,12 +156,14 @@ public class LearningActivity extends Activity {
             Collections.shuffle(result, new Random());
 
             //put selected word in the beginning of the list
-            for(int i = 0; i < result.size(); i++) {
-                if(result.get(i).getId() == firstWordId) {
-                    Word temp = result.get(i);
-                    result.set(i, result.get(0));
-                    result.set(0, temp);
-                    break;
+            if(firstWordId > -1) {
+                for(int i = 0; i < result.size(); i++) {
+                    if(result.get(i).getId() == firstWordId) {
+                        Word temp = result.get(i);
+                        result.set(i, result.get(0));
+                        result.set(0, temp);
+                        break;
+                    }
                 }
             }
 
