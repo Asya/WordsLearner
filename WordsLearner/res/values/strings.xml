@@ -37,4 +37,6 @@
     <string name="child">Kid</string>
     <string name="parent">Parent</string>
 
+    <!-- Passcode activity -->
+    <string name="passcode">Passcode:</string>
 </resources>

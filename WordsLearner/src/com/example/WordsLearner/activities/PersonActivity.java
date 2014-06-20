@@ -46,7 +46,7 @@ public class PersonActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Utils.log(LOG_TAG, "Selected parent mode");
-                startActivity(new Intent(PersonActivity.this, WordsListActivity.class));
+                startActivity(new Intent(PersonActivity.this, PasscodeActivity.class));
             }
         });
 

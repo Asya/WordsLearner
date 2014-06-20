@@ -47,16 +47,18 @@
         <item name="android:textSize">@dimen/normal_text</item>
     </style>
 
-    <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
-        <item name="android:background">@drawable/custom_tab_indicator</item>
-        <item name="android:textColor">#FF555555</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:dividerPadding">10dp</item>
-        <item name="android:showDividers">middle</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:paddingRight">8dp</item>
-        <item name="android:fadingEdge">horizontal</item>
-        <item name="android:fadingEdgeLength">8dp</item>
+    <style name="PasscodeEditText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:background">@drawable/edittext_passcode_state</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:inputType">number</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/normal_text</item>
+        <item name="android:gravity">center</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:maxLength">1</item>
     </style>
 
 </resources>
