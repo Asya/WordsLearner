@@ -4,33 +4,62 @@
         android:layout_height="match_parent"
         android:background="@color/background_app"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center">
     <include
             layout="@layout/title_header"/>
-    <LinearLayout
-            android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+        <FrameLayout
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-        <EditText
-            android:id="@+id/edit_pass1"
-            style="@style/PasscodeEditText"/>
-        <EditText
-                android:id="@+id/edit_pass2"
-                style="@style/PasscodeEditText"
-                android:enabled="false"/>
-        <EditText
-                android:id="@+id/edit_pass3"
-                style="@style/PasscodeEditText"
-                android:enabled="false"/>
-        <EditText
-                android:id="@+id/edit_pass4"
-                style="@style/PasscodeEditText"
-                android:enabled="false"/>
-    </LinearLayout>
+            android:layout_width="wrap_content"
+            android:visibility="invisible" >
+            <EditText
+                    android:id="@+id/edit_passcode_invivsible"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
+                    android:clickable="false">
+                        <requestFocus/>
+                    </EditText>
+        </FrameLayout>
+        <LinearLayout
+                android:id="@+id/layout_passcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true">
+            <TextView
+                    android:id="@+id/edit_pass1"
+                    style="@style/PasscodeEditText"
+                    android:text="_"/>
+            <TextView
+                    android:id="@+id/edit_pass2"
+                    style="@style/PasscodeEditText"
+                    android:enabled="false"/>
+            <TextView
+                    android:id="@+id/edit_pass3"
+                    style="@style/PasscodeEditText"
+                    android:enabled="false"/>
+            <TextView
+                    android:id="@+id/edit_pass4"
+                    style="@style/PasscodeEditText"
+                    android:enabled="false"/>
+        </LinearLayout>
 
-    <Button
-            android:id="@+id/btn_next"
-            android:text="@string/next"
-            style="@style/MediumRedButton"/>
+        <Button
+                android:id="@+id/btn_next"
+                android:text="@string/next"
+                style="@style/MediumRedButton"
+                android:enabled="false"
+                android:layout_below="@id/layout_passcode"/>
+    </RelativeLayout>
+
+
 </LinearLayout>

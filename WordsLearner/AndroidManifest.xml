@@ -33,7 +33,6 @@
                   android:configChanges="keyboardHidden|orientation|screenSize"
                   android:screenOrientation="sensorPortait"/>
         <activity android:name=".activities.PasscodeActivity"
-                  android:configChanges="keyboardHidden|orientation|screenSize"
                   android:screenOrientation="sensorPortait"/>
     </application>
 </manifest>
