@@ -12,14 +12,16 @@
                 android:id="@+id/btn_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/ListButtonAction"
-                android:text="@string/edit"/>
+                style="@style/MediumRedButtonUntransparent"
+                android:text="@string/edit"
+                android:layout_weight="1"/>
         <Button
                 android:id="@+id/btn_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/ListButtonAction"
-                android:text="@string/delete"/>
+                style="@style/MediumRedButtonUntransparent"
+                android:text="@string/delete"
+                android:layout_weight="1"/>
     </LinearLayout>
 
     <RelativeLayout

@@ -5,7 +5,7 @@
     <style name="ListBackContent">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">@dimen/height_list</item>
-        <item name="android:background">@color/selected_bg</item>
+        <item name="android:background">@drawable/slide_menu_bg</item>
         <item name="android:gravity">center</item>
     </style>
 
@@ -13,6 +13,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">@dimen/height_list</item>
         <item name="android:padding">@dimen/padding_default</item>
+        <item name="android:background">@color/background_app</item>
     </style>
 
     <style name="ListImage">
@@ -31,15 +32,15 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="ListButtonAction">
-        <item name="android:layout_margin">10dp</item>
-    </style>
-
     <style name="MediumRedButton" parent="MediumText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/red_btn_state</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="MediumRedButtonUntransparent" parent="MediumRedButton">
+        <item name="android:background">@drawable/red_btn_untransparent_state</item>
     </style>
 
     <style name="MediumText">

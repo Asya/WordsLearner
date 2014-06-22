@@ -65,6 +65,8 @@ public class WordsListAdapter extends BaseAdapter {
             holder.tvTitle.setTypeface(typeFace);
             holder.btnEdit = (Button) convertView.findViewById(R.id.btn_edit);
             holder.btnDelete = (Button) convertView.findViewById(R.id.btn_delete);
+            holder.btnEdit.setTypeface(typeFace);
+            holder.btnDelete.setTypeface(typeFace);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

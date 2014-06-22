@@ -14,9 +14,6 @@
             android:listSelector="#00000000"
             swipe:swipeFrontView="@+id/front"
             swipe:swipeBackView="@+id/back"
-            swipe:swipeDrawableChecked="@drawable/choice_selected"
-            swipe:swipeDrawableUnchecked="@drawable/choice_unselected"
-            swipe:swipeCloseAllItemsWhenMoveList="true"
             swipe:swipeMode="left"
             android:divider="@drawable/list_divider"
             android:padding="0dp"/>
