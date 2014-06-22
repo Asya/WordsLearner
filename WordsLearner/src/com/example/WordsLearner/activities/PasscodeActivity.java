@@ -9,7 +9,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -56,24 +55,23 @@ public class PasscodeActivity extends Activity {
                 String enterdPasscode = invisible_edit_text.getText().toString();
 
                 if(enterdPasscode.length() < PASSCODE_LENGTH) {
-                    Toast.makeText(PasscodeActivity.this, "Passcode should be 4 digit length", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PasscodeActivity.this, R.string.short_passcode, Toast.LENGTH_SHORT).show();
                     Utils.log(LOG_TAG, "Passcode < 4 digit lenght");
                     return;
                 }
+
+                hideKeyboard();
 
                 if(passcode == null) {
                     setPasscode(invisible_edit_text.getText().toString());
                 }
 
-                if (passCodeCorrect()) // they entered correct
-                {
+                if (passCodeCorrect()) {
                     Utils.log(LOG_TAG, "Passcode correct");
                     startActivity(new Intent(PasscodeActivity.this, WordsListActivity.class));
                     finish();
-                }
-                else
-                {
-                    Toast.makeText(PasscodeActivity.this, "Incorrect.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(PasscodeActivity.this, R.string.incorrect_passcode, Toast.LENGTH_SHORT).show();
                     Utils.log(LOG_TAG, "Passcode incorrect");
                 }
             }
@@ -147,13 +145,10 @@ public class PasscodeActivity extends Activity {
             pleaseSetPasscode.setVisibility(View.GONE);
         }
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
         findViewById(R.id.layout_passcode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
-                        .toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                showKeyboard();
             }
         });
 
@@ -163,15 +158,13 @@ public class PasscodeActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
-                .toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        showKeyboard();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(invisible_edit_text.getWindowToken(), 0);
+        hideKeyboard();
     }
 
     /**************************************************/
@@ -194,5 +187,15 @@ public class PasscodeActivity extends Activity {
     private void setPasscode(String passcode) {
         this.passcode = passcode;
         prefs.setPasscode(passcode);
+    }
+
+    private void hideKeyboard() {
+        ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(invisible_edit_text.getWindowToken(), 0);
+    }
+
+    private void showKeyboard() {
+        ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
+                .toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 }

@@ -1,7 +1,9 @@
 package com.example.WordsLearner.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -103,13 +105,15 @@ public class LearningActivity extends Activity {
 
             @Override
             public void onPageSelected(int i) {
-                Utils.log(LOG_TAG, "onPageSelected position = " + i + " word = " + data.get(i));
+                if(data.size() > 0) {
+                    Utils.log(LOG_TAG, "onPageSelected position = " + i + " word = " + data.get(i));
 
-                startPlaying(data.get(i));
+                    startPlaying(data.get(i));
 
-                StringBuilder builder = new StringBuilder();
-                builder.append(i + 1).append("/").append(data.size()).append(" ").append(data.get(i).getName());
-                counter.setText(builder.toString());
+                    StringBuilder builder = new StringBuilder();
+                    builder.append(i + 1).append("/").append(data.size()).append(" ").append(data.get(i).getName());
+                    counter.setText(builder.toString());
+                }
             }
 
             @Override
@@ -176,6 +180,18 @@ public class LearningActivity extends Activity {
             if (progressDialog != null) {
                 progressDialog.dismiss();
                 progressDialog = null;
+            }
+
+            if(result.size() == 0) {
+                new AlertDialog.Builder(LearningActivity.this)
+                        .setTitle("Words library is empty")
+                        .setMessage("Please add words to librery in parent mode")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        }).show();
             }
         }
     }

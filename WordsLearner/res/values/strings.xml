@@ -40,5 +40,6 @@
     <!-- Passcode activity -->
     <string name="passcode">Passcode:</string>
     <string name="please_set_passcode">Please set passcode to protect words library from kid.</string>
-
+    <string name="short_passcode">Passcode should be 4 digit long</string>
+    <string name="incorrect_passcode">Incorrect</string>
 </resources>
