@@ -12,6 +12,15 @@
         android:layout_width="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal">
+        <TextView
+            android:id="@+id/please_set_passcode"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            style="@style/MediumText"
+            android:text="@string/please_set_passcode"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
         <FrameLayout
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -34,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/please_set_passcode">
             <TextView
                     android:id="@+id/edit_pass1"
                     style="@style/PasscodeEditText"
@@ -58,7 +68,8 @@
                 android:text="@string/next"
                 style="@style/MediumRedButton"
                 android:enabled="false"
-                android:layout_below="@id/layout_passcode"/>
+                android:layout_below="@id/layout_passcode"
+                android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
 

@@ -39,4 +39,6 @@
 
     <!-- Passcode activity -->
     <string name="passcode">Passcode:</string>
+    <string name="please_set_passcode">Please set passcode to protect words library from kid.</string>
+
 </resources>

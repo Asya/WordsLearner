@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,11 +17,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.WordsLearner.R;
+import com.example.WordsLearner.utils.PreferencesManager;
 import com.example.WordsLearner.utils.Utils;
 
 public class PasscodeActivity extends Activity {
 
     private final static String LOG_TAG = "PasscodeActivity";
+
+    private final static int PASSCODE_LENGTH = 4;
 
     private TextView title;
     private Button btnNext;
@@ -31,11 +33,18 @@ public class PasscodeActivity extends Activity {
     private TextView editPass2;
     private TextView editPass3;
     private TextView editPass4;
+    private TextView pleaseSetPasscode;
+
+    private PreferencesManager prefs;
+    private String passcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passcode);
+
+        prefs = new PreferencesManager(this);
+        passcode = prefs.getPasscode();
 
         title = (TextView)findViewById(R.id.text);
         title.setText(R.string.passcode);
@@ -44,10 +53,20 @@ public class PasscodeActivity extends Activity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String enterdPasscode = invisible_edit_text.getText().toString();
+
+                if(enterdPasscode.length() < PASSCODE_LENGTH) {
+                    Toast.makeText(PasscodeActivity.this, "Passcode should be 4 digit length", Toast.LENGTH_SHORT).show();
+                    Utils.log(LOG_TAG, "Passcode < 4 digit lenght");
+                    return;
+                }
+
+                if(passcode == null) {
+                    setPasscode(invisible_edit_text.getText().toString());
+                }
 
                 if (passCodeCorrect()) // they entered correct
                 {
-                    Toast.makeText(PasscodeActivity.this, "Correct.", Toast.LENGTH_SHORT).show();
                     Utils.log(LOG_TAG, "Passcode correct");
                     startActivity(new Intent(PasscodeActivity.this, WordsListActivity.class));
                     finish();
@@ -68,19 +87,8 @@ public class PasscodeActivity extends Activity {
             {
                 if(actionId== EditorInfo.IME_ACTION_DONE)
                 {
-                    if (passCodeCorrect()) // they entered correct
-                    {
-                        Toast.makeText(PasscodeActivity.this, "Correct.", Toast.LENGTH_SHORT).show();
-                        btnNext.performClick();
-                        return false; // close the keyboard
-                    }
-                    else
-                    {
-                        Toast.makeText(PasscodeActivity.this, "Incorrect.", Toast.LENGTH_SHORT).show();
-                        return true; // keep the keyboard up
-                    }
+                    btnNext.performClick();
                 }
-
                 return false;
             }
         });
@@ -134,6 +142,11 @@ public class PasscodeActivity extends Activity {
         editPass3 = (TextView)findViewById(R.id.edit_pass3);
         editPass4 = (TextView)findViewById(R.id.edit_pass4);
 
+        pleaseSetPasscode = (TextView)findViewById(R.id.please_set_passcode);
+        if(passcode != null) {
+            pleaseSetPasscode.setVisibility(View.GONE);
+        }
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         findViewById(R.id.layout_passcode).setOnClickListener(new View.OnClickListener() {
@@ -171,9 +184,15 @@ public class PasscodeActivity extends Activity {
         editPass2.setTypeface(typeFace);
         editPass3.setTypeface(typeFace);
         editPass4.setTypeface(typeFace);
+        pleaseSetPasscode.setTypeface(typeFace);
     }
 
     private boolean passCodeCorrect() {
-        return invisible_edit_text.getText().toString().equals("1111");
+        return invisible_edit_text.getText().toString().equals(passcode);
+    }
+
+    private void setPasscode(String passcode) {
+        this.passcode = passcode;
+        prefs.setPasscode(passcode);
     }
 }

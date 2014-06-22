@@ -9,6 +9,7 @@ import android.content.SharedPreferences.Editor;
 public class PreferencesManager {
 
     private final static String KEY_DB_TIMESTAMP = "db_timestamp";
+    private final static String KEY_PASSCODE = "passcode";
 
     private static SharedPreferences preferences;
 
@@ -24,6 +25,14 @@ public class PreferencesManager {
 
     public void setDbTimestamp(long dbTimestemp) {
         setLong(KEY_DB_TIMESTAMP, dbTimestemp);
+    }
+
+    public String getPasscode() {
+        return getString(KEY_PASSCODE, null);
+    }
+
+    public void setPasscode(String passcode) {
+        setString(KEY_PASSCODE, passcode);
     }
 
     /**************************************************/
