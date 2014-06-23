@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.WordsLearner.R;
@@ -34,7 +37,9 @@ public class LearningActivity extends Activity {
     private ViewPager viewPager;
     private LearningPagerAdapter pagerAdapter;
     private ProgressDialog progressDialog;
-    private TextView counter;
+    private TextView name;
+    private Button btnLeft;
+    private Button btnRight;
 
     private MediaPlayer mPlayer = null;
 
@@ -51,7 +56,30 @@ public class LearningActivity extends Activity {
             Utils.log(LOG_TAG, "Selected word id in Intent = " + firstWordId);
         }
 
-        counter = (TextView)findViewById(R.id.counter);
+        name = (TextView)findViewById(R.id.name);
+        btnLeft = (Button)findViewById(R.id.btn_left);
+        btnRight = (Button)findViewById(R.id.btn_right);
+
+        btnLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int nextPosition = viewPager.getCurrentItem() - 1;
+                if(nextPosition >= 0) {
+                    viewPager.setCurrentItem(nextPosition);
+                }
+            }
+        });
+        btnRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int nextPosition = viewPager.getCurrentItem() + 1;
+                if(nextPosition < pagerAdapter.getCount()) {
+                    viewPager.setCurrentItem(nextPosition);
+                }
+            }
+        });
+
+        setTypeface();
         new LisWordsTask().execute();
     }
 
@@ -95,6 +123,13 @@ public class LearningActivity extends Activity {
 
     /**************************************************/
 
+    private void setTypeface() {
+        Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/chalk.ttf");
+        btnLeft.setTypeface(typeFace);
+        btnRight.setTypeface(typeFace);
+        name.setTypeface(typeFace);
+    }
+
     private void initViewPager(final List<Word> data){
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setOffscreenPageLimit(PAGER_CACHE_PAGE_COUNT);
@@ -112,7 +147,7 @@ public class LearningActivity extends Activity {
 
                     StringBuilder builder = new StringBuilder();
                     builder.append(i + 1).append("/").append(data.size()).append(" ").append(data.get(i).getName());
-                    counter.setText(builder.toString());
+                    name.setText(builder.toString());
                 }
             }
 

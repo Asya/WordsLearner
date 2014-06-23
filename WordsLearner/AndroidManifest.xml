@@ -25,7 +25,7 @@
                   android:screenOrientation="sensorPortait"/>
         <activity android:name=".activities.LearningActivity"
                   android:configChanges="keyboardHidden|orientation|screenSize"
-                  android:screenOrientation="sensorLandscape"/>
+                  android:screenOrientation="sensorPortait"/>
         <activity android:name=".activities.WordsListActivity"
                   android:configChanges="keyboardHidden|orientation|screenSize"
                   android:screenOrientation="sensorPortait"/>

@@ -1,17 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="vertical"
-android:layout_width="fill_parent"
-android:layout_height="fill_parent">
-<android.support.v4.view.ViewPager
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background_app">
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp">
+        <Button
+                android:id="@+id/btn_left"
+                style="@style/SmallRedButtonUntransparent"
+                android:layout_alignParentLeft="true"
+                android:text="←"/>
+        <Button
+                android:id="@+id/btn_right"
+                style="@style/SmallRedButtonUntransparent"
+                android:layout_alignParentRight="true"
+                android:text="→"/>
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
-<TextView
-        android:id="@+id/counter"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+    <TextView
+        android:id="@+id/name"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:padding="5dip"/>
+        android:background="@drawable/frame_name"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:textColor="@color/text"
+        android:textSize="@dimen/normal_text"/>
 </LinearLayout>
