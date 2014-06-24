@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -118,7 +117,7 @@ public class RecordSoundFragment extends Fragment {
         String soundName = null;
         try {
             soundName = Utils.getSoundTempFile().getAbsolutePath();
-            ((CreateWordActivity)getActivity()).setSoundTempFilePath(soundName);
+            ((CreateWordActivity)getActivity()).setSoundFilePath(soundName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -171,7 +170,7 @@ public class RecordSoundFragment extends Fragment {
     }
 
     private void startPlaying() {
-        String soundName = ((CreateWordActivity)getActivity()).getSoundTempFilePath();
+        String soundName = ((CreateWordActivity)getActivity()).getSoundFilePath();
         Utils.log(LOG_TAG, "Start playing file = " + soundName);
 
         mPlayer = new MediaPlayer();

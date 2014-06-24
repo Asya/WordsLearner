@@ -2,7 +2,6 @@ package com.example.WordsLearner.fragments;
 
 import android.app.Dialog;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -91,7 +90,7 @@ public class SetNameFragment extends Fragment {
     }
 
     private String moveSoundFile() {
-        String soundTempFilePath = ((CreateWordActivity)getActivity()).getSoundTempFilePath();
+        String soundTempFilePath = ((CreateWordActivity)getActivity()).getSoundFilePath();
         if(soundTempFilePath == null) {
             return null;
         }
@@ -116,7 +115,7 @@ public class SetNameFragment extends Fragment {
     }
 
     private String moveImageFile() {
-        String imageTempFilePath = ((CreateWordActivity)getActivity()).getImageTempFilePath();
+        String imageTempFilePath = ((CreateWordActivity)getActivity()).getImageFilePath();
         if(imageTempFilePath == null) {
             return null;
         }

@@ -2,13 +2,11 @@ package com.example.WordsLearner.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import com.example.WordsLearner.R;
 import com.example.WordsLearner.adapters.CreateWordPagerAdapter;
 import com.example.WordsLearner.model.Word;
 import com.example.WordsLearner.utils.Utils;
 import com.example.WordsLearner.views.OneSideViewPager;
-import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.IconPageIndicator;
 
 public class CreateWordActivity extends Activity {
@@ -22,8 +20,8 @@ public class CreateWordActivity extends Activity {
     private int mode = MODE_CREATE;
 
     private Word currentWord;
-    private String imageTempFilePath;
-    private String soundTempFilePath;
+    private String imageFilePath;
+    private String soundFilePath;
 
     private OneSideViewPager viewPager;
     private IconPageIndicator circlePageIndicator;
@@ -64,22 +62,22 @@ public class CreateWordActivity extends Activity {
 
     /**************************************************/
 
-    public String getImageTempFilePath() {
-        return imageTempFilePath;
+    public String getImageFilePath() {
+        return imageFilePath;
     }
 
-    public void setImageTempFilePath(String imageTempFilePath) {
-        Utils.log(LOG_TAG, "setting path to image " + imageTempFilePath);
-        this.imageTempFilePath = imageTempFilePath;
+    public void setImageFilePath(String imageFilePath) {
+        Utils.log(LOG_TAG, "setting path to image " + imageFilePath);
+        this.imageFilePath = imageFilePath;
     }
 
-    public String getSoundTempFilePath() {
-        return soundTempFilePath;
+    public String getSoundFilePath() {
+        return soundFilePath;
     }
 
-    public void setSoundTempFilePath(String soundTempFilePath) {
-        Utils.log(LOG_TAG, "setting path to audio " + soundTempFilePath);
-        this.soundTempFilePath = soundTempFilePath;
+    public void setSoundFilePath(String soundFilePath) {
+        Utils.log(LOG_TAG, "setting path to audio " + soundFilePath);
+        this.soundFilePath = soundFilePath;
     }
 
     public Word getCurrentWord() {

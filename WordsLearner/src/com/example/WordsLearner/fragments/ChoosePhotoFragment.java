@@ -40,6 +40,8 @@ public class ChoosePhotoFragment extends Fragment {
     private ImageView imagePreview;
     private ProgressBar progressBar;
 
+    private String imageTempFileName;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -92,8 +94,9 @@ public class ChoosePhotoFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ChoosePhotoFragment.PICK_IMAGE && data != null && data.getData() != null) {
             if(saveExistingImagePath(data)) {
-                File imageFile = new File(((CreateWordActivity)getActivity()).getImageTempFilePath());
+                File imageFile = new File(imageTempFileName);
                 new LoadPreviewAsync(imageFile).execute();
+                ((CreateWordActivity)getActivity()).setImageFilePath(imageTempFileName);
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage(R.string.no_photo_permissions)
@@ -102,9 +105,12 @@ public class ChoosePhotoFragment extends Fragment {
                 dialog.show();
             }
         } else if (requestCode == ChoosePhotoFragment.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            File imageFile = new File(((CreateWordActivity)getActivity()).getImageTempFilePath());
+            File imageFile = new File(imageTempFileName);
             new LoadPreviewAsync(imageFile).execute();
+            ((CreateWordActivity)getActivity()).setImageFilePath(imageTempFileName);
         }
+
+
 
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -137,7 +143,7 @@ public class ChoosePhotoFragment extends Fragment {
             return false;
         }
 
-        ((CreateWordActivity)getActivity()).setImageTempFilePath(imageFilePath);
+        imageTempFileName = imageFilePath;
         return true;
     }
 
@@ -148,7 +154,7 @@ public class ChoosePhotoFragment extends Fragment {
             File tempPhotoFile = null;
             try {
                 tempPhotoFile = Utils.getCameraTempFile();
-                ((CreateWordActivity)getActivity()).setImageTempFilePath(tempPhotoFile.getAbsolutePath());
+                imageTempFileName = tempPhotoFile.getAbsolutePath();
                 Utils.log(LOG_TAG, "Prepared file to take a picture from camera with path = " + tempPhotoFile.getAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
